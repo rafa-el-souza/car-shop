@@ -16,10 +16,7 @@ export class CustomRouter<T> {
   private addRoute = () => {
     this.router.get(this.route, this.controller.read);
     this.router.get(`${this.route}/:id`, this.controller.readOne);
-    this.router.post(
-      this.route,
-      this.controller.create,
-    );
+    this.router.post(this.route, this.controller.create);
     this.router.put(`${this.route}/:id`, this.controller.update);
     this.router.delete(`${this.route}/:id`, this.controller.delete);
   };
