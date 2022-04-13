@@ -12,32 +12,33 @@ export abstract class Controller<T> {
   abstract create(
     req: Request<T>,
     res: Response<T>,
-  ): Promise<typeof res>;
+    next: NextFunction,
+  ): Promise<typeof res | void>;
 
   read = (
     _req: Request,
-    res: Response<T[] | void>,
+    res: Response<T[]>,
     next: NextFunction,
   ): Promise<typeof res | void> => this.service.read()
     .then((result) => res.status(200).json(result))
-    .catch((err) => {
-      console.error(err);
-      next({ error: 'Something went wrong...' });
-    });
+    .catch((err) => next({ code: 500, error: err }));
 
   abstract readOne(
     req: Request<{ id: string; }>,
-    res: Response<T>
-  ): Promise<typeof res>;
+    res: Response<T>,
+    next: NextFunction,
+  ): Promise<typeof res | void>;
 
   abstract update(
     req: Request<{ id: string; }, unknown, T>,
-    res: Response<T>
-  ): Promise<typeof res>;
+    res: Response<T>,
+    next: NextFunction,
+  ): Promise<typeof res | void>;
 
   abstract delete(
     req: Request<{ id: string; }>,
-    res: Response<T>
-  ): Promise<typeof res>;
+    res: Response<T>,
+    next: NextFunction,
+  ): Promise<typeof res | void>;
 }
 export default Controller;
