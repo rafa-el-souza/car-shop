@@ -1,15 +1,52 @@
+/* eslint-disable max-lines-per-function */
 import { NextFunction, Request, Response } from 'express';
-import { DomainError } from '../interfaces';
+import { ZodError, ZodIssueCode } from 'zod';
 
-export const errorMiddleware = (
-  err: DomainError,
-  req: Request,
+import { DomainError, StatusCodes } from '../interfaces';
+
+export const handleDomainError = (
+  err: DomainError<null>,
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  if (err.code) {
+    return res.status(err.code).json({ message: err.message });
+  }
+  return next(err);
+};
+
+export const handleZodDomainError = (
+  err: DomainError<ZodError>,
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  console.error(err.error?.flatten());
+  const firstIssue = err.error?.issues[0];
+  if (
+    firstIssue?.code === ZodIssueCode.invalid_type
+    || firstIssue?.code === ZodIssueCode.too_small
+    || firstIssue?.code === ZodIssueCode.too_big
+  ) {
+    return res.status(StatusCodes.badRequest)
+      .json({ message: firstIssue.message });
+  }
+  return next(err);
+};
+
+export const handleInternalError = (
+  err: DomainError<null>,
+  _req: Request,
   res: Response,
   _next: NextFunction,
 ) => {
   console.log(_next);
-  console.error(err.error);
-  return res.status(err.code || 500).json();
+  return res.status(StatusCodes.internal)
+    .json({ message: 'Something went wrong...' });
 };
 
-export default errorMiddleware;
+export default {
+  handleDomainError,
+  handleZodDomainError,
+};

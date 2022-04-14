@@ -1,9 +1,7 @@
-import { ZodError } from 'zod';
-
-export interface DomainError {
-  error?: ZodError;
+export interface DomainError<E> {
+  code?: number;
   message?: string;
-  code?: number; 
+  error?: E;
 }
 
 export default DomainError;
