@@ -11,7 +11,7 @@ export const handleDomainError = (
   next: NextFunction,
 ) => {
   if (err.code) {
-    return res.status(err.code).json({ message: err.message });
+    return res.status(err.code).json({ error: err.message });
   }
   return next(err);
 };
@@ -30,7 +30,7 @@ export const handleZodDomainError = (
     || firstIssue?.code === ZodIssueCode.too_big
   ) {
     return res.status(StatusCodes.badRequest)
-      .json({ message: firstIssue.message });
+      .json({ error: firstIssue.message });
   }
   return next(err);
 };
@@ -43,7 +43,7 @@ export const handleInternalError = (
 ) => {
   console.log(_next);
   return res.status(StatusCodes.internal)
-    .json({ message: 'Something went wrong...' });
+    .json({ error: 'Something went wrong...' });
 };
 
 export default {
