@@ -20,10 +20,6 @@ export const vehicleSchema = z.object({
       invalid_type_error: 'Color must be a string',
     })
     .min(3, { message: 'Color must be 3 or more characters long' }),
-  status: z.boolean({
-    required_error: 'Status is required',
-    invalid_type_error: 'Status must be a boolean',
-  }),
   buyValue: z
     .number({
       required_error: 'buyValue is required',
