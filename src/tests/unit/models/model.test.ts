@@ -2,66 +2,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import mongoose from 'mongoose';
 import { CarModel } from '../../../models';
-
-const createCarOutput = {
-  "model": "111",
-  "year": 1900,
-  "color": "111",
-  "buyValue": 2,
-  "doorsQty": 2,
-  "seatsQty": 2,
-  "_id": "62582213a86d802c9d915bb5",
-}
-
-const createCarInput = {
-  "model": "111",
-  "year": 1900,
-  "color": "111",
-  "buyValue": 2,
-  "doorsQty": 2,
-  "seatsQty": 2,
-}
-
-const readCarsOutput = [
-  {
-    "model": "111",
-    "year": 1900,
-    "color": "111",
-    "buyValue": 2,
-    "doorsQty": 2,
-    "seatsQty": 2,
-    "_id": "62582213a86d802c9d915bb5",
-  }
-]
-
-const readOneCarOutput = {
-  "model": "111",
-  "year": 1900,
-  "color": "111",
-  "buyValue": 2,
-  "doorsQty": 2,
-  "seatsQty": 2,
-  "_id": "62582213a86d802c9d915bb5",
-}
-
-const updateCarOutput = {
-  model: "Fiat Uno",
-  year: 1963,
-  color: "blue",
-  buyValue: 3500,
-  seatsQty: 4,
-  doorsQty: 4,
-  _id: "4edd40c86762e0fb12000003",
-}
-
-const updateCarInput = {
-  model: "Fiat Uno",
-  year: 1963,
-  color: "blue",
-  buyValue: 3500,
-  seatsQty: 4,
-  doorsQty: 4,
-}
+import { createCarInput, createCarOutput, readCarsOutput, readOneCarOutput, updateCarInput, updateCarOutput } from '../utils';
 
 describe('01 - CarModel', () => {
   describe('a) CarModel.create', () => {
@@ -73,6 +14,7 @@ describe('01 - CarModel', () => {
       stub.reset();
     })
     it('Returns created car', () => {
+
       new CarModel().create({ ...createCarInput })
       .then((output) => {
         expect(output).to.be.an('object');
