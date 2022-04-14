@@ -10,15 +10,44 @@ export class CustomRouter<T> {
     private route: string = controller.route,
   ) {
     this.router = Router();
-    this.addRoute();
+    this.addGetRoutes();
+    this.addPostRoutes();
+    this.addPutRoutes();
+    this.addDeleteRoutes();
   }
 
-  private addRoute = () => {
-    this.router.get(this.route, this.controller.read);
-    this.router.get(`${this.route}/:id`, this.controller.readOne);
-    this.router.post(this.route, this.controller.create);
-    this.router.put(`${this.route}/:id`, this.controller.update);
-    this.router.delete(`${this.route}/:id`, this.controller.delete);
+  private addGetRoutes = () => {
+    this.router.get(
+      this.route,
+      this.controller.read,
+    );
+    this.router.get(
+      `${this.route}/:id`,
+      this.controller.validateId,
+      this.controller.readOne,
+    );
+  };
+
+  private addPostRoutes = () => {
+    this.router.post(
+      this.route,
+      this.controller.validateBody,
+      this.controller.create,
+    );
+  };
+
+  private addPutRoutes = () => {
+    this.router.put(
+      `${this.route}/:id`,
+      this.controller.update,
+    );
+  };
+
+  private addDeleteRoutes = () => {
+    this.router.delete(
+      `${this.route}/:id`,
+      this.controller.delete,
+    );
   };
 }
 
