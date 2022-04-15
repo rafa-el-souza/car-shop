@@ -6,11 +6,13 @@ import {
   handleZodDomainError,
 } from './errors';
 
-import { CarFactory } from './factories';
+import { CarFactory, MotorcycleFactory } from './factories';
 
 const server = new App();
 
 server.addRouter(CarFactory().router);
+
+server.addRouter(MotorcycleFactory().router);
 
 server.app.use(handleDomainError);
 
