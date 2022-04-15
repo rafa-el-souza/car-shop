@@ -39,6 +39,8 @@ export class CustomRouter<T> {
   private addPutRoutes = () => {
     this.router.put(
       `${this.route}/:id`,
+      this.controller.validateId,
+      this.controller.validateBody,
       this.controller.update,
     );
   };
@@ -46,6 +48,7 @@ export class CustomRouter<T> {
   private addDeleteRoutes = () => {
     this.router.delete(
       `${this.route}/:id`,
+      this.controller.validateId,
       this.controller.delete,
     );
   };
