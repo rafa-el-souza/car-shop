@@ -1,9 +1,14 @@
-import { CarController } from '../controllers';
+import { CarController, MotorcycleController } from '../controllers';
 import { CustomRouter } from '../routers';
-import { Car } from '../interfaces';
+import { Car, Motorcycle } from '../interfaces';
 
 export const CarFactory = () => new CustomRouter<Car>(new CarController());
 
+export const MotorcycleFactory = () => new CustomRouter<Motorcycle>(
+  new MotorcycleController(),
+);
+
 export default {
   CarFactory,
+  MotorcycleFactory,
 };
