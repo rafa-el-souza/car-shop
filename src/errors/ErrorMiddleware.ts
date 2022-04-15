@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { ZodError, ZodIssueCode } from 'zod';
+import { ZodError } from 'zod';
 
 import { DomainError, StatusCodes as c } from '../interfaces';
 import { ErrorMessage as m } from './ErrorMessages';
@@ -24,13 +24,9 @@ export const handleZodDomainError = (
 ) => {
   console.error(err.error?.flatten().fieldErrors);
   const firstIssue = err.error?.issues[0];
-  if (
-    firstIssue?.code === ZodIssueCode.invalid_type
-    || firstIssue?.code === ZodIssueCode.too_small
-    || firstIssue?.code === ZodIssueCode.too_big
-  ) {
+  if (err.error instanceof ZodError) {
     return res.status(c.badRequest)
-      .json({ error: firstIssue.message });
+      .json({ error: firstIssue?.message });
   }
   return next(err);
 };
