@@ -12,10 +12,12 @@ export const carSchema = new Schema<CarDocument>({
   buyValue: Number,
   doorsQty: Number,
   seatsQty: Number,
-});
+}, { versionKey: false });
 
 export class CarModel extends GenericModel<CarType> {
-  constructor(model = createModel('Car', carSchema)) {
+  constructor(
+    model = createModel('Car', carSchema),
+  ) {
     super(model);
   }
 }
