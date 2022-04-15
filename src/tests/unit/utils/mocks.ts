@@ -1,52 +1,60 @@
-export const createCarOutput = {
-  "model": "111",
-  "year": 1900,
-  "color": "111",
-  "buyValue": 2,
-  "doorsQty": 2,
-  "seatsQty": 2,
-  "_id": "62582213a86d802c9d915bb5",
+import sinon from 'sinon';
+
+type MockResponse = {
+  status(): sinon.SinonStub | null;
+  json(): sinon.SinonStub | null;
 }
 
+export const mockRequest = (body: unknown) => ({ body });
+
+export const mockResponse = () => {
+  const res: MockResponse = { status: () => null, json: () => null };
+  res.status = sinon.stub().returns(res);
+  res.json = sinon.stub().returns(res);
+  return res;
+};
+
+export const mockId = '4edd40c86762e0fb12000003';
+
 export const createCarInput = {
-  "model": "111",
-  "year": 1900,
-  "color": "111",
-  "buyValue": 2,
+  "model": "Brasília",
+  "year": 1972,
+  "color": "Ciano",
+  "buyValue": 4000,
   "doorsQty": 2,
-  "seatsQty": 2,
+  "seatsQty": 5,
+}
+
+export const createCarOutput = {
+  "model": "Brasília",
+  "year": 1972,
+  "color": "Ciano",
+  "buyValue": 4000,
+  "doorsQty": 2,
+  "seatsQty": 5,
+  "_id": mockId,
 }
 
 export const readCarsOutput = [
   {
-    "model": "111",
-    "year": 1900,
-    "color": "111",
-    "buyValue": 2,
+    "model": "Fusca",
+    "year": 1986,
+    "color": "Magenta",
+    "buyValue": 10000,
     "doorsQty": 2,
-    "seatsQty": 2,
-    "_id": "62582213a86d802c9d915bb5",
+    "seatsQty": 4,
+    "_id": mockId,
   }
 ]
 
 export const readOneCarOutput = {
-  "model": "111",
-  "year": 1900,
-  "color": "111",
-  "buyValue": 2,
+  "model": "Fusca",
+  "year": 1986,
+  "color": "Magenta",
+  "buyValue": 10000,
   "doorsQty": 2,
-  "seatsQty": 2,
-  "_id": "62582213a86d802c9d915bb5",
-}
-
-export const updateCarOutput = {
-  model: "Fiat Uno",
-  year: 1963,
-  color: "blue",
-  buyValue: 3500,
-  seatsQty: 4,
-  doorsQty: 4,
-  _id: "4edd40c86762e0fb12000003",
+  "seatsQty": 4,
+  "_id": mockId,
 }
 
 export const updateCarInput = {
@@ -56,6 +64,26 @@ export const updateCarInput = {
   buyValue: 3500,
   seatsQty: 4,
   doorsQty: 4,
+}
+
+export const updateCarOutput = {
+  model: "Fiat Uno",
+  year: 1963,
+  color: "blue",
+  buyValue: 3500,
+  seatsQty: 4,
+  doorsQty: 4,
+  _id: mockId,
+}
+
+export const deleteCarOutput = {
+  model: "Opala",
+  year: 1982,
+  color: "Black",
+  buyValue: 8000,
+  seatsQty: 5,
+  doorsQty: 4,
+  _id: mockId,
 }
 
 export default {}
