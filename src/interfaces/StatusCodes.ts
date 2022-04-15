@@ -4,6 +4,7 @@ export enum StatusCodes {
   badRequest = 400,
   notFound = 404,
   internal = 500,
+  noContent = 204,
 }
 
 export default StatusCodes;
