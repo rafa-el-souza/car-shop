@@ -11,7 +11,7 @@ export abstract class Controller<T> {
 
   constructor(
     protected service: GenericService<T>,
-    protected schema: ZodObject<ZodRawShape>,
+    public schema: ZodObject<ZodRawShape>,
   ) {}
 
   validateBody = (
