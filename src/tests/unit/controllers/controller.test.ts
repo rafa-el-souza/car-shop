@@ -346,4 +346,98 @@ describe('01 - CarController', () => {
       })
     })
   })
+
+  describe('f) CarController.validateBody', () => {
+    const zodParserStub = sinon.stub(new CarController().schema, 'parse');
+    const nextStub = sinon.stub();
+
+    describe('Success', () => {
+
+      before(() => {
+        zodParserStub.resolves(true);
+      })
+      after(() => {
+        zodParserStub.reset();
+      })
+
+      it('Returns next()', () => {
+        const req = mockRequest(createCarInput, { id: mockId });
+        const res = mockResponse();
+        new CarController().validateBody(
+          req as Request<{ id: string; }>,
+          res as unknown as Response,
+          nextStub,
+        );
+        expect(nextStub.calledOnce);
+      })
+    })
+
+    describe('Failure', () => {
+
+      before(() => {
+        zodParserStub.throws({ error: {} });
+      })
+      after(() => {
+        zodParserStub;
+      })
+
+      it('Throws error and passes it to next function', () => {
+        const req = mockRequest(createCarInput, { id: mockId });
+        const res = mockResponse();
+        new CarController().validateBody(
+          req as Request<{ id: string; }>,
+          res as unknown as Response,
+          nextStub,
+        )
+        expect(nextStub.calledOnceWith({ error: {} }));
+      })
+    })
+  })
+
+  describe('g) CarController.validateId', () => {
+    const mongooseValidatorStub = sinon.stub(mongoose.Types.ObjectId, 'isValid');
+    const nextStub = sinon.stub();
+
+    describe('Success', () => {
+
+      before(() => {
+        mongooseValidatorStub.returns(true);
+      })
+      after(() => {
+        mongooseValidatorStub;
+      })
+
+      it('Returns next()', () => {
+        const req = mockRequest(createCarInput, { id: mockId });
+        const res = mockResponse();
+        new CarController().validateId(
+          req as Request<{ id: string; }>,
+          res as unknown as Response,
+          nextStub,
+        )
+        expect(nextStub.calledOnce);
+      })
+    })
+
+    describe('Failure', () => {
+
+      before(() => {
+        mongooseValidatorStub.returns(false);
+      })
+      after(() => {
+        mongooseValidatorStub.reset();
+      })
+
+      it('Throws error and passes it to next function', () => {
+        const req = mockRequest(createCarInput, { id: mockId });
+        const res = mockResponse();
+        new CarController().validateId(
+          req as Request<{ id: string; }>,
+          res as unknown as Response,
+          nextStub,
+        )
+        expect(nextStub.calledOnceWith({ error: {} }));
+      })
+    })
+  })
 })
