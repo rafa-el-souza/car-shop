@@ -5,7 +5,7 @@ type MockResponse = {
   json(): sinon.SinonStub | null;
 }
 
-export const mockRequest = (body: unknown) => ({ body });
+export const mockRequest = (body?: unknown, params?: { id: string }) => ({ body, params });
 
 export const mockResponse = () => {
   const res: MockResponse = { status: () => null, json: () => null };
