@@ -1,4 +1,5 @@
 import sinon from 'sinon';
+import { Motorcycle } from '../../../interfaces';
 
 type MockResponse = {
   status(): sinon.SinonStub | null;
@@ -83,6 +84,76 @@ export const deleteCarOutput = {
   buyValue: 8000,
   seatsQty: 5,
   doorsQty: 4,
+  _id: mockId,
+}
+
+export const createMotorcycleInput = {
+  "model": "Dream",
+  "year": 2020,
+  "color": "Black",
+  "buyValue": 4000,
+  "category": 'Trail',
+  "engineCapacity": 500,
+}
+
+export const createMotorcycleOutput = {
+  "model": "Dream",
+  "year": 2020,
+  "color": "Black",
+  "buyValue": 4000,
+  "category": 'Trail',
+  "engineCapacity": 500,
+  "_id": mockId,
+}
+
+export const readMotorcyclesOutput = [
+  {
+    "model": "Dream",
+    "year": 2020,
+    "color": "Black",
+    "buyValue": 4000,
+    "category": 'Trail',
+    "engineCapacity": 500,
+    "_id": mockId,
+  }
+]
+
+export const readOneMotorcycleOutput = {
+  "model": "Dream",
+  "year": 2020,
+  "color": "Black",
+  "buyValue": 4000,
+  "category": 'Trail',
+  "engineCapacity": 500,
+  "_id": mockId,
+}
+
+export const updateMotorcycleInput = {
+  "model": "Dream",
+  "year": 2020,
+  "color": "Black",
+  "buyValue": 4000,
+  "category": 'Trail',
+  "engineCapacity": 500,
+}
+
+export const updateMotorcycleOutput = {
+  "model": "Dream",
+  "year": 2020,
+  "color": "Black",
+  "buyValue": 4000,
+  "category": 'Trail',
+  "engineCapacity": 500,
+  _id: mockId,
+}
+
+export const deleteMotorcycleOutput = {
+  "model": "Dream",
+  "year": 2020,
+  "color": "Black",
+  "buyValue": 4000,
+  "category": 'Trail',
+  "engineCapacity": 500,
   _id: mockId,
 }
 
