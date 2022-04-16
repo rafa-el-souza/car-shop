@@ -1,6 +1,7 @@
 import { expect } from 'chai';
-import sinon from 'sinon';
 import { Request, Response } from 'express';
+import sinon from 'sinon';
+import mongoose from 'mongoose';
 import { CarController } from '../../../controllers';
 import { CarService } from '../../../services';
 import { createCarInput, createCarOutput, deleteCarOutput, mockId, mockRequest, mockResponse, readCarsOutput, readOneCarOutput, updateCarInput, updateCarOutput } from '../utils';
@@ -79,7 +80,7 @@ describe('01 - CarController', () => {
       it('Returns response 200 with an array of cars', () => {
         const req = mockRequest({});
         const res = mockResponse();
-        new CarController().create(
+        new CarController().read(
           req as Request<{ id: string; }>,
           res as unknown as Response,
           nextStub,
@@ -105,7 +106,7 @@ describe('01 - CarController', () => {
         it('Passes an error to next function', () => {
           const req = mockRequest({});
           const res = mockResponse();
-          new CarController().create(
+          new CarController().read(
             req as Request<{ id: string; }>,
             res as unknown as Response,
             nextStub,
@@ -132,9 +133,9 @@ describe('01 - CarController', () => {
       })
 
       it('Returns response 200 with an one car', () => {
-        const req = mockRequest({ params: { id: mockId } });
+        const req = mockRequest({}, { id: mockId });
         const res = mockResponse();
-        new CarController().create(
+        new CarController().readOne(
           req as Request<{ id: string; }>,
           res as unknown as Response,
           nextStub,
@@ -157,9 +158,9 @@ describe('01 - CarController', () => {
 
       describe('Internal error', () => {
         it('Passes an error to next function', () => {
-          const req = mockRequest({});
+          const req = mockRequest({}, { id: mockId });
           const res = mockResponse();
-          new CarController().create(
+          new CarController().readOne(
             req as Request<{ id: string; }>,
             res as unknown as Response,
             nextStub,
@@ -179,9 +180,9 @@ describe('01 - CarController', () => {
 
       describe('Car not found', () => {
         it('Passes an 404 error to next function', () => {
-          const req = mockRequest({});
+          const req = mockRequest({}, { id: mockId });
           const res = mockResponse();
-          new CarController().create(
+          new CarController().readOne(
             req as Request<{ id: string; }>,
             res as unknown as Response,
             nextStub,
@@ -208,9 +209,9 @@ describe('01 - CarController', () => {
       })
 
       it('Returns response 200 with updated car', () => {
-        const req = mockRequest({ body: updateCarInput, params: { id: mockId } });
+        const req = mockRequest(updateCarInput, { id: mockId });
         const res = mockResponse();
-        new CarController().create(
+        new CarController().update(
           req as Request<{ id: string; }>,
           res as unknown as Response,
           nextStub,
@@ -233,9 +234,9 @@ describe('01 - CarController', () => {
 
       describe('Internal error', () => {
         it('Passes an error to next function', () => {
-          const req = mockRequest({ body: updateCarInput, params: { id: mockId } });
+          const req = mockRequest(updateCarInput, { id: mockId });
           const res = mockResponse();
-          new CarController().create(
+          new CarController().update(
             req as Request<{ id: string; }>,
             res as unknown as Response,
             nextStub,
@@ -255,9 +256,9 @@ describe('01 - CarController', () => {
 
       describe('Car not found', () => {
         it('Passes an 404 error to next function', () => {
-          const req = mockRequest({ body: updateCarInput, params: { id: mockId } });
+          const req = mockRequest(updateCarInput, { id: mockId });
           const res = mockResponse();
-          new CarController().create(
+          new CarController().update(
             req as Request<{ id: string; }>,
             res as unknown as Response,
             nextStub,
@@ -284,9 +285,9 @@ describe('01 - CarController', () => {
       })
 
       it('Returns empty body', () => {
-        const req = mockRequest({ params: { id: mockId } });
+        const req = mockRequest({}, { id: mockId });
         const res = mockResponse();
-        new CarController().create(
+        new CarController().delete(
           req as Request<{ id: string; }>,
           res as unknown as Response,
           nextStub,
@@ -309,9 +310,9 @@ describe('01 - CarController', () => {
 
       describe('Internal error', () => {
         it('Passes an error to next function', () => {
-          const req = mockRequest({ params: { id: mockId } });
+          const req = mockRequest({}, { id: mockId });
           const res = mockResponse();
-          new CarController().create(
+          new CarController().delete(
             req as Request<{ id: string; }>,
             res as unknown as Response,
             nextStub,
@@ -331,9 +332,9 @@ describe('01 - CarController', () => {
 
       describe('Car not found', () => {
         it('Passes an 404 error to next function', () => {
-          const req = mockRequest({ params: { id: mockId } });
+          const req = mockRequest({}, { id: mockId });
           const res = mockResponse();
-          new CarController().create(
+          new CarController().delete(
             req as Request<{ id: string; }>,
             res as unknown as Response,
             nextStub,
@@ -346,5 +347,3 @@ describe('01 - CarController', () => {
     })
   })
 })
-
-// // maybe test generic abstract classes instead of specific ones
