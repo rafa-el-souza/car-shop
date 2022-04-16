@@ -440,4 +440,14 @@ describe('01 - CarController', () => {
       })
     })
   })
+  
+  describe('g) CarController.getRoute', () => {
+
+    describe('Success', () => {
+      it('Returns the route string', () => {
+        const route = new CarController().route;
+        expect(route).to.equal('/cars');
+      })
+    })
+  })
 })
