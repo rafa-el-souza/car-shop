@@ -2,17 +2,19 @@ import { expect } from 'chai';
 import { Request, Response } from 'express';
 import sinon from 'sinon';
 import mongoose from 'mongoose';
-import { CarController } from '../../../controllers';
-import { CarService } from '../../../services';
-import { createCarInput, createCarOutput, deleteCarOutput, mockId, mockRequest, mockResponse, readCarsOutput, readOneCarOutput, updateCarInput, updateCarOutput } from '../utils';
-import { StatusCodes as c } from '../../../interfaces';
+import { CarController, MotorcycleController } from '../../../controllers';
+import { CarService, MotorcycleService } from '../../../services';
+import { createCarInput, createCarOutput, createMotorcycleInput, createMotorcycleOutput, deleteCarOutput, deleteMotorcycleOutput, mockId, mockRequest, mockResponse, readCarsOutput, readMotorcyclesOutput, readOneCarOutput, readOneMotorcycleOutput, updateCarInput, updateCarOutput, updateMotorcycleInput, updateMotorcycleOutput } from '../utils';
+import { Motorcycle, StatusCodes as c } from '../../../interfaces';
 import { ErrorMessage as m } from '../../../errors';
+
+const mongooseValidatorStub = sinon.stub(mongoose.Types.ObjectId, 'isValid');
+const nextStub = sinon.stub();
 
 describe('01 - CarController', () => {
 
   describe('a) CarController.create', () => {
     const serviceStub = sinon.stub(new CarService(), 'create')
-    const nextStub = sinon.stub();
 
     describe('Success', () => {
 
@@ -66,7 +68,6 @@ describe('01 - CarController', () => {
 
   describe('b) CarController.read', () => {
     const serviceStub = sinon.stub(new CarService(), 'read')
-    const nextStub = sinon.stub();
 
     describe('Success', () => {
 
@@ -120,8 +121,7 @@ describe('01 - CarController', () => {
   })
 
   describe('c) CarController.readOne', () => {
-    const serviceStub = sinon.stub(new CarService(), 'readOne')
-    const nextStub = sinon.stub();
+    const serviceStub = sinon.stub(new CarService(), 'readOne');
 
     describe('Success', () => {
 
@@ -197,7 +197,6 @@ describe('01 - CarController', () => {
 
   describe('d) CarController.update', () => {
     const serviceStub = sinon.stub(new CarService(), 'update')
-    const nextStub = sinon.stub();
 
     describe('Success', () => {
 
@@ -273,7 +272,6 @@ describe('01 - CarController', () => {
 
   describe('e) CarController.delete', () => {
     const serviceStub = sinon.stub(new CarService(), 'delete')
-    const nextStub = sinon.stub();
 
     describe('Success', () => {
 
@@ -349,7 +347,6 @@ describe('01 - CarController', () => {
 
   describe('f) CarController.validateBody', () => {
     const zodParserStub = sinon.stub(new CarController().schema, 'parse');
-    const nextStub = sinon.stub();
 
     describe('Success', () => {
 
@@ -393,10 +390,8 @@ describe('01 - CarController', () => {
       })
     })
   })
-
+  
   describe('g) CarController.validateId', () => {
-    const mongooseValidatorStub = sinon.stub(mongoose.Types.ObjectId, 'isValid');
-    const nextStub = sinon.stub();
 
     describe('Success', () => {
 
@@ -404,7 +399,7 @@ describe('01 - CarController', () => {
         mongooseValidatorStub.returns(true);
       })
       after(() => {
-        mongooseValidatorStub;
+        mongooseValidatorStub.reset();
       })
 
       it('Returns next()', () => {
@@ -440,13 +435,449 @@ describe('01 - CarController', () => {
       })
     })
   })
-  
+
   describe('g) CarController.getRoute', () => {
 
     describe('Success', () => {
       it('Returns the route string', () => {
         const route = new CarController().route;
         expect(route).to.equal('/cars');
+      })
+    })
+  })
+})
+
+describe('02 - MotorcycleController', () => {
+
+  describe('a) MotorcycleController.create', () => {
+    const serviceStub = sinon.stub(new MotorcycleService(), 'create')
+
+    describe('Success', () => {
+
+      before(() => {
+        serviceStub.resolves(createMotorcycleOutput as Motorcycle);
+      })
+      after(() => {
+        serviceStub.reset();
+      })
+
+      it('Returns response 201 with created object', () => {
+        const req = mockRequest(createMotorcycleInput);
+        const res = mockResponse();
+        new MotorcycleController().create(
+          req as Request<{ id: string; }>,
+          res as unknown as Response,
+          nextStub,
+        )
+          .then(() => {
+            expect(res.status()?.calledOnceWith(c.created));
+            expect(res.json()?.calledOnceWith(createMotorcycleOutput));
+          })
+      })
+    })
+
+    describe('Failure', () => {
+
+      before(() => {
+        serviceStub.throws({ error: {} });
+      })
+      after(() => {
+        serviceStub.reset();
+      })
+
+      describe('Internal error', () => {
+        it('Passes an error to next function', () => {
+          const req = mockRequest(createMotorcycleInput);
+          const res = mockResponse();
+          new MotorcycleController().create(
+            req as Request<{ id: string; }>,
+            res as unknown as Response,
+            nextStub,
+          )
+            .then(() => {
+              expect(nextStub.calledOnceWith({ error: {} }));
+            })
+        })
+      })
+    })
+  })
+
+  describe('b) MotorcycleController.read', () => {
+    const serviceStub = sinon.stub(new MotorcycleService(), 'read')
+
+    describe('Success', () => {
+
+      before(() => {
+        serviceStub.resolves(readMotorcyclesOutput as Motorcycle[]);
+      })
+      after(() => {
+        serviceStub.reset();
+      })
+
+      it('Returns response 200 with an array of cars', () => {
+        const req = mockRequest({});
+        const res = mockResponse();
+        new MotorcycleController().read(
+          req as Request<{ id: string; }>,
+          res as unknown as Response,
+          nextStub,
+        )
+          .then(() => {
+            expect(res.status()?.calledOnceWith(c.ok));
+            expect(res.json()?.calledOnceWith(readMotorcyclesOutput));
+          })
+      })
+    })
+
+    describe('Failure', () => {
+
+      before(() => {
+        serviceStub.throws({ error: {} });
+      })
+      after(() => {
+        serviceStub.reset();
+      })
+
+      describe('Internal error', () => {
+
+        it('Passes an error to next function', () => {
+          const req = mockRequest({});
+          const res = mockResponse();
+          new MotorcycleController().read(
+            req as Request<{ id: string; }>,
+            res as unknown as Response,
+            nextStub,
+          )
+            .then(() => {
+              expect(nextStub.calledOnceWith({ error: {} }));
+            })
+        })
+      })
+    })
+  })
+
+  describe('c) MotorcycleController.readOne', () => {
+    const serviceStub = sinon.stub(new MotorcycleService(), 'readOne');
+
+    describe('Success', () => {
+
+      before(() => {
+        serviceStub.resolves(readOneMotorcycleOutput as Motorcycle);
+      })
+      after(() => {
+        serviceStub.reset();
+      })
+
+      it('Returns response 200 with an one car', () => {
+        const req = mockRequest({}, { id: mockId });
+        const res = mockResponse();
+        new MotorcycleController().readOne(
+          req as Request<{ id: string; }>,
+          res as unknown as Response,
+          nextStub,
+        )
+          .then(() => {
+            expect(res.status()?.calledOnceWith(c.ok));
+            expect(res.json()?.calledOnceWith(readOneMotorcycleOutput));
+          })
+      })
+    })
+
+    describe('Failure', () => {
+
+      before(() => {
+        serviceStub.throws({ error: {} });
+      })
+      after(() => {
+        serviceStub.reset();
+      })
+
+      describe('Internal error', () => {
+        it('Passes an error to next function', () => {
+          const req = mockRequest({}, { id: mockId });
+          const res = mockResponse();
+          new MotorcycleController().readOne(
+            req as Request<{ id: string; }>,
+            res as unknown as Response,
+            nextStub,
+          )
+            .then(() => {
+              expect(nextStub.calledOnceWith({ error: {} }));
+            })
+        })
+      })
+
+      before(() => {
+        serviceStub.resolves(null);
+      })
+      after(() => {
+        serviceStub.reset();
+      })
+
+      describe('Motorcycle not found', () => {
+        it('Passes an 404 error to next function', () => {
+          const req = mockRequest({}, { id: mockId });
+          const res = mockResponse();
+          new MotorcycleController().readOne(
+            req as Request<{ id: string; }>,
+            res as unknown as Response,
+            nextStub,
+          )
+            .then(() => {
+              expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound }));
+            })
+        })
+      })
+    })
+  })
+
+  describe('d) MotorcycleController.update', () => {
+    const serviceStub = sinon.stub(new MotorcycleService(), 'update');
+
+    describe('Success', () => {
+
+      before(() => {
+        serviceStub.resolves(updateMotorcycleOutput as Motorcycle);
+      })
+      after(() => {
+        serviceStub.reset();
+      })
+
+      it('Returns response 200 with updated car', () => {
+        const req = mockRequest(updateMotorcycleInput, { id: mockId });
+        const res = mockResponse();
+        new MotorcycleController().update(
+          req as Request<{ id: string; }>,
+          res as unknown as Response,
+          nextStub,
+        )
+          .then(() => {
+            expect(res.status()?.calledOnceWith(c.ok));
+            expect(res.json()?.calledOnceWith(updateMotorcycleOutput));
+          })
+      })
+    })
+
+    describe('Failure', () => {
+
+      before(() => {
+        serviceStub.throws({ error: {} });
+      })
+      after(() => {
+        serviceStub.reset();
+      })
+
+      describe('Internal error', () => {
+        it('Passes an error to next function', () => {
+          const req = mockRequest(updateMotorcycleInput, { id: mockId });
+          const res = mockResponse();
+          new MotorcycleController().update(
+            req as Request<{ id: string; }>,
+            res as unknown as Response,
+            nextStub,
+          )
+            .then(() => {
+              expect(nextStub.calledOnceWith({ error: {} }));
+            })
+        })
+      })
+
+      before(() => {
+        serviceStub.resolves(null);
+      })
+      after(() => {
+        serviceStub.reset();
+      })
+
+      describe('Motorcycle not found', () => {
+        it('Passes an 404 error to next function', () => {
+          const req = mockRequest(updateMotorcycleInput, { id: mockId });
+          const res = mockResponse();
+          new MotorcycleController().update(
+            req as Request<{ id: string; }>,
+            res as unknown as Response,
+            nextStub,
+          )
+            .then(() => {
+              expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound }));
+            })
+        })
+      })
+    })
+  })
+
+  describe('e) MotorcycleController.delete', () => {
+    const serviceStub = sinon.stub(new MotorcycleService(), 'delete');
+
+    describe('Success', () => {
+
+      before(() => {
+        serviceStub.resolves(deleteMotorcycleOutput as Motorcycle);
+      })
+      after(() => {
+        serviceStub.reset();
+      })
+
+      it('Returns empty body', () => {
+        const req = mockRequest({}, { id: mockId });
+        const res = mockResponse();
+        new MotorcycleController().delete(
+          req as Request<{ id: string; }>,
+          res as unknown as Response,
+          nextStub,
+        )
+          .then(() => {
+            expect(res.status()?.calledOnceWith(c.noContent));
+            expect(res.json()?.calledOnceWith({}));
+          })
+      })
+    })
+
+    describe('Failure', () => {
+
+      before(() => {
+        serviceStub.throws({ error: {} });
+      })
+      after(() => {
+        serviceStub.reset();
+      })
+
+      describe('Internal error', () => {
+        it('Passes an error to next function', () => {
+          const req = mockRequest({}, { id: mockId });
+          const res = mockResponse();
+          new MotorcycleController().delete(
+            req as Request<{ id: string; }>,
+            res as unknown as Response,
+            nextStub,
+          )
+            .then(() => {
+              expect(nextStub.calledOnceWith({ error: {} }));
+            })
+        })
+      })
+
+      before(() => {
+        serviceStub.resolves(null);
+      })
+      after(() => {
+        serviceStub.reset();
+      })
+
+      describe('Motorcycle not found', () => {
+        it('Passes an 404 error to next function', () => {
+          const req = mockRequest({}, { id: mockId });
+          const res = mockResponse();
+          new MotorcycleController().delete(
+            req as Request<{ id: string; }>,
+            res as unknown as Response,
+            nextStub,
+          )
+            .then(() => {
+              expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound }));
+            })
+        })
+      })
+    })
+  })
+
+  describe('f) MotorcycleController.validateBody', () => {
+    const zodParserStub = sinon.stub(new MotorcycleController().schema, 'parse');
+
+    describe('Success', () => {
+
+      before(() => {
+        zodParserStub.resolves(true);
+      })
+      after(() => {
+        zodParserStub.reset();
+      })
+
+      it('Returns next()', () => {
+        const req = mockRequest(createMotorcycleInput, { id: mockId });
+        const res = mockResponse();
+        new MotorcycleController().validateBody(
+          req as Request<{ id: string; }>,
+          res as unknown as Response,
+          nextStub,
+        );
+        expect(nextStub.calledOnce);
+      })
+    })
+
+    describe('Failure', () => {
+
+      before(() => {
+        zodParserStub.throws({ error: {} });
+      })
+      after(() => {
+        zodParserStub;
+      })
+
+      it('Throws error and passes it to next function', () => {
+        const req = mockRequest(createMotorcycleInput, { id: mockId });
+        const res = mockResponse();
+        new MotorcycleController().validateBody(
+          req as Request<{ id: string; }>,
+          res as unknown as Response,
+          nextStub,
+        )
+        expect(nextStub.calledOnceWith({ error: {} }));
+      })
+    })
+  })
+
+  describe('g) MotorcycleController.validateId', () => {
+
+    describe('Success', () => {
+
+      before(() => {
+        mongooseValidatorStub.returns(true);
+      })
+      after(() => {
+        mongooseValidatorStub.reset();
+      })
+
+      it('Returns next()', () => {
+        const req = mockRequest(createMotorcycleInput, { id: mockId });
+        const res = mockResponse();
+        new MotorcycleController().validateId(
+          req as Request<{ id: string; }>,
+          res as unknown as Response,
+          nextStub,
+        )
+        expect(nextStub.calledOnce);
+      })
+    })
+
+    describe('Failure', () => {
+
+      before(() => {
+        mongooseValidatorStub.returns(false);
+      })
+      after(() => {
+        mongooseValidatorStub.reset();
+      })
+
+      it('Throws error and passes it to next function', () => {
+        const req = mockRequest(createMotorcycleInput, { id: mockId });
+        const res = mockResponse();
+        new MotorcycleController().validateId(
+          req as Request<{ id: string; }>,
+          res as unknown as Response,
+          nextStub,
+        )
+        expect(nextStub.calledOnceWith({ error: {} }));
+      })
+    })
+  })
+
+  describe('g) MotorcycleController.getRoute', () => {
+
+    describe('Success', () => {
+      it('Returns the route string', () => {
+        const route = new MotorcycleController().route;
+        expect(route).to.equal('/motorcycles');
       })
     })
   })
