@@ -13,17 +13,14 @@ describe('06 - Endpoint POST /motorcycles', () => {
 
   beforeAll(async () => {
     await connection();
-    console.log('createMotorcycle connectToDatabase!');
   });
 
   beforeEach(async () => {
     await clearDatabase();
-    console.log('createMotorcycle clearDatabase!');
   });
 
   afterAll(async () => {
     await closeDatabase();
-    console.log('createMotorcycle closeDatabase!');
   });
 
   describe('✅ Success', () => {
