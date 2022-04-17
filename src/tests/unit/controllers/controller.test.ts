@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { Request, Response } from 'express';
 import sinon from 'sinon';
 import mongoose from 'mongoose';
+
 import { CarController, MotorcycleController } from '../../../controllers';
 import { CarService, MotorcycleService } from '../../../services';
 import { createCarInput, createCarOutput, createMotorcycleInput, createMotorcycleOutput, deleteCarOutput, deleteMotorcycleOutput, mockId, mockRequest, mockResponse, readCarsOutput, readMotorcyclesOutput, readOneCarOutput, readOneMotorcycleOutput, updateCarInput, updateCarOutput, updateMotorcycleInput, updateMotorcycleOutput } from '../utils';
@@ -23,6 +24,7 @@ describe('01 - CarController', () => {
       })
       after(() => {
         serviceStub.reset();
+        nextStub.reset();
       })
 
       it('Returns response 201 with created object', () => {
@@ -42,14 +44,18 @@ describe('01 - CarController', () => {
 
     describe('Failure', () => {
 
-      before(() => {
-        serviceStub.throws({ error: {} });
-      })
-      after(() => {
-        serviceStub.reset();
-      })
-
       describe('Internal error', () => {
+
+        before(() => {
+          serviceStub.throws({ error: {} });
+          // serviceStub.throwsException({ error: {} });
+          // serviceStub.rejects({ error: {} });
+        })
+        after(() => {
+          serviceStub.reset();
+          nextStub.reset();
+        })
+
         it('Passes an error to next function', () => {
           const req = mockRequest(createCarInput);
           const res = mockResponse();
@@ -67,7 +73,7 @@ describe('01 - CarController', () => {
   })
 
   describe('b) CarController.read', () => {
-    const serviceStub = sinon.stub(new CarService(), 'read')
+    const serviceStub = sinon.stub(new CarService(), 'read');
 
     describe('Success', () => {
 
@@ -76,6 +82,7 @@ describe('01 - CarController', () => {
       })
       after(() => {
         serviceStub.reset();
+        nextStub.reset();
       })
 
       it('Returns response 200 with an array of cars', () => {
@@ -94,15 +101,18 @@ describe('01 - CarController', () => {
     })
 
     describe('Failure', () => {
-
-      before(() => {
-        serviceStub.throws({ error: {} });
-      })
-      after(() => {
-        serviceStub.reset();
-      })
-
+      // const serviceStub = sinon.stub(new CarService(), 'read');
+      // const nextStub = sinon.stub();
+      
       describe('Internal error', () => {
+
+        before(() => {
+          serviceStub.throws({ error: {} });
+        })
+        after(() => {
+          serviceStub.reset();
+          nextStub.reset();
+        })
 
         it('Passes an error to next function', () => {
           const req = mockRequest({});
@@ -130,6 +140,7 @@ describe('01 - CarController', () => {
       })
       after(() => {
         serviceStub.reset();
+        nextStub.reset();
       })
 
       it('Returns response 200 with an one car', () => {
@@ -149,14 +160,16 @@ describe('01 - CarController', () => {
 
     describe('Failure', () => {
 
-      before(() => {
-        serviceStub.throws({ error: {} });
-      })
-      after(() => {
-        serviceStub.reset();
-      })
-
       describe('Internal error', () => {
+
+        before(() => {
+          serviceStub.throws({ error: {} });
+        })
+        after(() => {
+          serviceStub.reset();
+          nextStub.reset();
+        })
+
         it('Passes an error to next function', () => {
           const req = mockRequest({}, { id: mockId });
           const res = mockResponse();
@@ -171,14 +184,16 @@ describe('01 - CarController', () => {
         })
       })
 
-      before(() => {
-        serviceStub.resolves(null);
-      })
-      after(() => {
-        serviceStub.reset();
-      })
-
       describe('Car not found', () => {
+
+        before(() => {
+          serviceStub.resolves(null);
+        })
+        after(() => {
+          serviceStub.reset();
+          nextStub.reset();
+        })
+
         it('Passes an 404 error to next function', () => {
           const req = mockRequest({}, { id: mockId });
           const res = mockResponse();
@@ -205,6 +220,7 @@ describe('01 - CarController', () => {
       })
       after(() => {
         serviceStub.reset();
+        nextStub.reset();
       })
 
       it('Returns response 200 with updated car', () => {
@@ -224,14 +240,16 @@ describe('01 - CarController', () => {
 
     describe('Failure', () => {
 
-      before(() => {
-        serviceStub.throws({ error: {} });
-      })
-      after(() => {
-        serviceStub.reset();
-      })
-
       describe('Internal error', () => {
+
+        before(() => {
+          serviceStub.throws({ error: {} });
+        })
+        after(() => {
+          serviceStub.reset();
+          nextStub.reset();
+        })
+
         it('Passes an error to next function', () => {
           const req = mockRequest(updateCarInput, { id: mockId });
           const res = mockResponse();
@@ -246,14 +264,16 @@ describe('01 - CarController', () => {
         })
       })
 
-      before(() => {
-        serviceStub.resolves(null);
-      })
-      after(() => {
-        serviceStub.reset();
-      })
-
       describe('Car not found', () => {
+
+        before(() => {
+          serviceStub.resolves(null);
+        })
+        after(() => {
+          serviceStub.reset();
+          nextStub.reset();
+        })
+
         it('Passes an 404 error to next function', () => {
           const req = mockRequest(updateCarInput, { id: mockId });
           const res = mockResponse();
@@ -280,6 +300,7 @@ describe('01 - CarController', () => {
       })
       after(() => {
         serviceStub.reset();
+        nextStub.reset();
       })
 
       it('Returns empty body', () => {
@@ -299,14 +320,16 @@ describe('01 - CarController', () => {
 
     describe('Failure', () => {
 
-      before(() => {
-        serviceStub.throws({ error: {} });
-      })
-      after(() => {
-        serviceStub.reset();
-      })
-
       describe('Internal error', () => {
+
+        before(() => {
+          serviceStub.throws({ error: {} });
+        })
+        after(() => {
+          serviceStub.reset();
+          nextStub.reset();
+        })
+
         it('Passes an error to next function', () => {
           const req = mockRequest({}, { id: mockId });
           const res = mockResponse();
@@ -321,14 +344,16 @@ describe('01 - CarController', () => {
         })
       })
 
-      before(() => {
-        serviceStub.resolves(null);
-      })
-      after(() => {
-        serviceStub.reset();
-      })
-
       describe('Car not found', () => {
+
+        before(() => {
+          serviceStub.resolves(null);
+        })
+        after(() => {
+          serviceStub.reset();
+          nextStub.reset();
+        })
+
         it('Passes an 404 error to next function', () => {
           const req = mockRequest({}, { id: mockId });
           const res = mockResponse();
@@ -459,6 +484,7 @@ describe('02 - MotorcycleController', () => {
       })
       after(() => {
         serviceStub.reset();
+        nextStub.reset();
       })
 
       it('Returns response 201 with created object', () => {
@@ -478,14 +504,16 @@ describe('02 - MotorcycleController', () => {
 
     describe('Failure', () => {
 
-      before(() => {
-        serviceStub.throws({ error: {} });
-      })
-      after(() => {
-        serviceStub.reset();
-      })
-
       describe('Internal error', () => {
+
+        before(() => {
+          serviceStub.throws({ error: {} });
+        })
+        after(() => {
+          serviceStub.reset();
+          nextStub.reset();
+        })
+
         it('Passes an error to next function', () => {
           const req = mockRequest(createMotorcycleInput);
           const res = mockResponse();
@@ -512,6 +540,7 @@ describe('02 - MotorcycleController', () => {
       })
       after(() => {
         serviceStub.reset();
+        nextStub.reset();
       })
 
       it('Returns response 200 with an array of cars', () => {
@@ -530,15 +559,16 @@ describe('02 - MotorcycleController', () => {
     })
 
     describe('Failure', () => {
-
-      before(() => {
-        serviceStub.throws({ error: {} });
-      })
-      after(() => {
-        serviceStub.reset();
-      })
-
+      
       describe('Internal error', () => {
+        
+        before(() => {
+          serviceStub.throws({ error: {} });
+        })
+        after(() => {
+          serviceStub.reset();
+          nextStub.reset();
+        })
 
         it('Passes an error to next function', () => {
           const req = mockRequest({});
@@ -566,6 +596,7 @@ describe('02 - MotorcycleController', () => {
       })
       after(() => {
         serviceStub.reset();
+        nextStub.reset();
       })
 
       it('Returns response 200 with an one car', () => {
@@ -585,14 +616,16 @@ describe('02 - MotorcycleController', () => {
 
     describe('Failure', () => {
 
-      before(() => {
-        serviceStub.throws({ error: {} });
-      })
-      after(() => {
-        serviceStub.reset();
-      })
-
       describe('Internal error', () => {
+
+        before(() => {
+          serviceStub.throws({ error: {} });
+        })
+        after(() => {
+          serviceStub.reset();
+          nextStub.reset();
+        })
+
         it('Passes an error to next function', () => {
           const req = mockRequest({}, { id: mockId });
           const res = mockResponse();
@@ -607,14 +640,16 @@ describe('02 - MotorcycleController', () => {
         })
       })
 
-      before(() => {
-        serviceStub.resolves(null);
-      })
-      after(() => {
-        serviceStub.reset();
-      })
-
       describe('Motorcycle not found', () => {
+
+        before(() => {
+          serviceStub.resolves(null);
+        })
+        after(() => {
+          serviceStub.reset();
+          nextStub.reset();
+        })
+
         it('Passes an 404 error to next function', () => {
           const req = mockRequest({}, { id: mockId });
           const res = mockResponse();
@@ -641,6 +676,7 @@ describe('02 - MotorcycleController', () => {
       })
       after(() => {
         serviceStub.reset();
+        nextStub.reset();
       })
 
       it('Returns response 200 with updated car', () => {
@@ -660,14 +696,16 @@ describe('02 - MotorcycleController', () => {
 
     describe('Failure', () => {
 
-      before(() => {
-        serviceStub.throws({ error: {} });
-      })
-      after(() => {
-        serviceStub.reset();
-      })
-
       describe('Internal error', () => {
+
+        before(() => {
+          serviceStub.throws({ error: {} });
+        })
+        after(() => {
+          serviceStub.reset();
+          nextStub.reset();
+        })
+
         it('Passes an error to next function', () => {
           const req = mockRequest(updateMotorcycleInput, { id: mockId });
           const res = mockResponse();
@@ -682,14 +720,16 @@ describe('02 - MotorcycleController', () => {
         })
       })
 
-      before(() => {
-        serviceStub.resolves(null);
-      })
-      after(() => {
-        serviceStub.reset();
-      })
-
       describe('Motorcycle not found', () => {
+
+        before(() => {
+          serviceStub.resolves(null);
+        })
+        after(() => {
+          serviceStub.reset();
+          nextStub.reset();
+        })
+
         it('Passes an 404 error to next function', () => {
           const req = mockRequest(updateMotorcycleInput, { id: mockId });
           const res = mockResponse();
@@ -716,6 +756,7 @@ describe('02 - MotorcycleController', () => {
       })
       after(() => {
         serviceStub.reset();
+        nextStub.reset();
       })
 
       it('Returns empty body', () => {
@@ -735,14 +776,16 @@ describe('02 - MotorcycleController', () => {
 
     describe('Failure', () => {
 
-      before(() => {
-        serviceStub.throws({ error: {} });
-      })
-      after(() => {
-        serviceStub.reset();
-      })
-
       describe('Internal error', () => {
+
+        before(() => {
+          serviceStub.throws({ error: {} });
+        })
+        after(() => {
+          serviceStub.reset();
+          nextStub.reset();
+        })
+
         it('Passes an error to next function', () => {
           const req = mockRequest({}, { id: mockId });
           const res = mockResponse();
@@ -757,14 +800,16 @@ describe('02 - MotorcycleController', () => {
         })
       })
 
-      before(() => {
-        serviceStub.resolves(null);
-      })
-      after(() => {
-        serviceStub.reset();
-      })
-
       describe('Motorcycle not found', () => {
+
+        before(() => {
+          serviceStub.resolves(null);
+        })
+        after(() => {
+          serviceStub.reset();
+          nextStub.reset();
+        })
+
         it('Passes an 404 error to next function', () => {
           const req = mockRequest({}, { id: mockId });
           const res = mockResponse();
