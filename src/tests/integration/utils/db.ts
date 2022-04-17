@@ -6,7 +6,7 @@ export const closeDatabase = async () => {
 }
 
 export const clearDatabase = async () => {
-  const collections = mongoose.connection.collections;
+  const collections = await mongoose.connection.collections;
 
   for (const key in collections) {
     const collection = collections[key];
