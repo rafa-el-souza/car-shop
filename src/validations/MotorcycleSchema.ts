@@ -11,6 +11,9 @@ const motorcycleSchema = vehicleSchema.extend({
     })
     .int({ message: 'Engine Capacity must be an integer' })
     .positive({ message: 'Engine Capacity must be positive' })
+    .gte(50, {
+      message: 'Engine Capacity must be greater than or equal to 50',
+    })
     .lte(2500, {
       message: 'Engine Capacity must be less than or equal to 2500',
     }),
