@@ -1,22 +1,51 @@
 import { expect } from 'chai';
-import { Request, Response } from 'express';
 import sinon from 'sinon';
-import mongoose from 'mongoose';
+import { Request, Response } from 'express';
 
-import { CarController, MotorcycleController } from '../../../controllers';
-import { CarService, MotorcycleService } from '../../../services';
-import { createCarInput, createCarOutput, createMotorcycleInput, createMotorcycleOutput, deleteCarOutput, deleteMotorcycleOutput, mockId, mockRequest, mockResponse, readCarsOutput, readMotorcyclesOutput, readOneCarOutput, readOneMotorcycleOutput, updateCarInput, updateCarOutput, updateMotorcycleInput, updateMotorcycleOutput } from '../utils';
-import { Motorcycle, StatusCodes as c } from '../../../interfaces';
+import {
+  CarController,
+  MotorcycleController
+} from '../../../controllers';
+
+import {
+  CarService,
+  MotorcycleService
+} from '../../../services';
+
+import {
+  createCarInput,
+  createCarOutput,
+  createMotorcycleInput,
+  createMotorcycleOutput,
+  deleteCarOutput,
+  deleteMotorcycleOutput,
+  mockId,
+  mockRequest,
+  mockResponse,
+  mongooseValidatorStub,
+  nextStub,
+  readCarsOutput,
+  readMotorcyclesOutput,
+  readOneCarOutput,
+  readOneMotorcycleOutput,
+  updateCarInput,
+  updateCarOutput,
+  updateMotorcycleInput,
+  updateMotorcycleOutput
+} from '../utils';
+
+import {
+  Motorcycle,
+  StatusCodes as c
+} from '../../../interfaces';
+
 import { ErrorMessage as m } from '../../../errors';
-
-const mongooseValidatorStub = sinon.stub(mongoose.Types.ObjectId, 'isValid');
-const nextStub = sinon.stub();
 
 describe('01 - CarController', () => {
 
   describe('a) CarController.create', () => {
-    const serviceStub = sinon.stub(new CarService(), 'create')
-
+    const serviceStub = sinon.stub(new CarService(), 'create');
+    
     describe('Success', () => {
 
       before(() => {
@@ -36,8 +65,8 @@ describe('01 - CarController', () => {
           nextStub,
         )
           .then(() => {
-            expect(res.status()?.calledOnceWith(c.created));
-            expect(res.json()?.calledOnceWith(createCarOutput));
+            expect(res.status().calledWith(c.created)).to.be.true;
+            expect(res.json().calledOnceWith(createCarOutput)).to.be.true;
           })
       })
     })
@@ -48,8 +77,6 @@ describe('01 - CarController', () => {
 
         before(() => {
           serviceStub.throws({ error: {} });
-          // serviceStub.throwsException({ error: {} });
-          // serviceStub.rejects({ error: {} });
         })
         after(() => {
           serviceStub.reset();
@@ -57,15 +84,18 @@ describe('01 - CarController', () => {
         })
 
         it('Passes an error to next function', () => {
-          const req = mockRequest(createCarInput);
+          const req = mockRequest();
           const res = mockResponse();
           new CarController().create(
             req as Request<{ id: string; }>,
             res as unknown as Response,
             nextStub,
           )
-            .then(() => {
-              expect(nextStub.calledOnceWith({ error: {} }));
+            .then((result) => {
+              // console.log('result: ', result);
+              // console.log('assertion: ', nextStub.calledOnceWith({ error: {} }))
+              expect(nextStub.calledOnce).to.be.true;
+              expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
             })
         })
       })
@@ -94,15 +124,13 @@ describe('01 - CarController', () => {
           nextStub,
         )
           .then(() => {
-            expect(res.status()?.calledOnceWith(c.ok));
-            expect(res.json()?.calledOnceWith(readCarsOutput));
+            expect(res.status()?.calledOnceWith(c.ok)).to.be.true;
+            expect(res.json()?.calledOnceWith(readCarsOutput)).to.be.true;
           })
       })
     })
 
     describe('Failure', () => {
-      // const serviceStub = sinon.stub(new CarService(), 'read');
-      // const nextStub = sinon.stub();
       
       describe('Internal error', () => {
 
@@ -123,7 +151,7 @@ describe('01 - CarController', () => {
             nextStub,
           )
             .then(() => {
-              expect(nextStub.calledOnceWith({ error: {} }));
+              expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
             })
         })
       })
@@ -152,8 +180,8 @@ describe('01 - CarController', () => {
           nextStub,
         )
           .then(() => {
-            expect(res.status()?.calledOnceWith(c.ok));
-            expect(res.json()?.calledOnceWith(readOneCarOutput));
+            expect(res.status()?.calledOnceWith(c.ok)).to.be.true;
+            expect(res.json()?.calledOnceWith(readOneCarOutput)).to.be.true;
           })
       })
     })
@@ -179,7 +207,7 @@ describe('01 - CarController', () => {
             nextStub,
           )
             .then(() => {
-              expect(nextStub.calledOnceWith({ error: {} }));
+              expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
             })
         })
       })
@@ -203,7 +231,7 @@ describe('01 - CarController', () => {
             nextStub,
           )
             .then(() => {
-              expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound }));
+              expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound })).to.be.true;
             })
         })
       })
@@ -232,8 +260,8 @@ describe('01 - CarController', () => {
           nextStub,
         )
           .then(() => {
-            expect(res.status()?.calledOnceWith(c.ok));
-            expect(res.json()?.calledOnceWith(updateCarOutput));
+            expect(res.status()?.calledOnceWith(c.ok)).to.be.true;
+            expect(res.json()?.calledOnceWith(updateCarOutput)).to.be.true;
           })
       })
     })
@@ -259,7 +287,7 @@ describe('01 - CarController', () => {
             nextStub,
           )
             .then(() => {
-              expect(nextStub.calledOnceWith({ error: {} }));
+              expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
             })
         })
       })
@@ -283,7 +311,7 @@ describe('01 - CarController', () => {
             nextStub,
           )
             .then(() => {
-              expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound }));
+              expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound })).to.be.true;
             })
         })
       })
@@ -312,8 +340,8 @@ describe('01 - CarController', () => {
           nextStub,
         )
           .then(() => {
-            expect(res.status()?.calledOnceWith(c.noContent));
-            expect(res.json()?.calledOnceWith({}));
+            expect(res.status()?.calledOnceWith(c.noContent)).to.be.true;
+            expect(res.json()?.calledOnceWith({})).to.be.true;
           })
       })
     })
@@ -339,7 +367,7 @@ describe('01 - CarController', () => {
             nextStub,
           )
             .then(() => {
-              expect(nextStub.calledOnceWith({ error: {} }));
+              expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
             })
         })
       })
@@ -363,7 +391,7 @@ describe('01 - CarController', () => {
             nextStub,
           )
             .then(() => {
-              expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound }));
+              expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound })).to.be.true;
             })
         })
       })
@@ -390,7 +418,7 @@ describe('01 - CarController', () => {
           res as unknown as Response,
           nextStub,
         );
-        expect(nextStub.calledOnce);
+        expect(nextStub.calledOnce).to.be.true;
       })
     })
 
@@ -411,7 +439,7 @@ describe('01 - CarController', () => {
           res as unknown as Response,
           nextStub,
         )
-        expect(nextStub.calledOnceWith({ error: {} }));
+        expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
       })
     })
   })
@@ -435,7 +463,7 @@ describe('01 - CarController', () => {
           res as unknown as Response,
           nextStub,
         )
-        expect(nextStub.calledOnce);
+        expect(nextStub.calledOnce).to.be.true;
       })
     })
 
@@ -456,7 +484,7 @@ describe('01 - CarController', () => {
           res as unknown as Response,
           nextStub,
         )
-        expect(nextStub.calledOnceWith({ error: {} }));
+        expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
       })
     })
   })
@@ -496,8 +524,8 @@ describe('02 - MotorcycleController', () => {
           nextStub,
         )
           .then(() => {
-            expect(res.status()?.calledOnceWith(c.created));
-            expect(res.json()?.calledOnceWith(createMotorcycleOutput));
+            expect(res.status()?.calledOnceWith(c.created)).to.be.true;
+            expect(res.json()?.calledOnceWith(createMotorcycleOutput)).to.be.true;
           })
       })
     })
@@ -523,7 +551,7 @@ describe('02 - MotorcycleController', () => {
             nextStub,
           )
             .then(() => {
-              expect(nextStub.calledOnceWith({ error: {} }));
+              expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
             })
         })
       })
@@ -552,8 +580,8 @@ describe('02 - MotorcycleController', () => {
           nextStub,
         )
           .then(() => {
-            expect(res.status()?.calledOnceWith(c.ok));
-            expect(res.json()?.calledOnceWith(readMotorcyclesOutput));
+            expect(res.status()?.calledOnceWith(c.ok)).to.be.true;
+            expect(res.json()?.calledOnceWith(readMotorcyclesOutput)).to.be.true;
           })
       })
     })
@@ -579,7 +607,7 @@ describe('02 - MotorcycleController', () => {
             nextStub,
           )
             .then(() => {
-              expect(nextStub.calledOnceWith({ error: {} }));
+              expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
             })
         })
       })
@@ -608,8 +636,8 @@ describe('02 - MotorcycleController', () => {
           nextStub,
         )
           .then(() => {
-            expect(res.status()?.calledOnceWith(c.ok));
-            expect(res.json()?.calledOnceWith(readOneMotorcycleOutput));
+            expect(res.status()?.calledOnceWith(c.ok)).to.be.true;
+            expect(res.json()?.calledOnceWith(readOneMotorcycleOutput)).to.be.true;
           })
       })
     })
@@ -635,7 +663,7 @@ describe('02 - MotorcycleController', () => {
             nextStub,
           )
             .then(() => {
-              expect(nextStub.calledOnceWith({ error: {} }));
+              expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
             })
         })
       })
@@ -659,7 +687,7 @@ describe('02 - MotorcycleController', () => {
             nextStub,
           )
             .then(() => {
-              expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound }));
+              expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound })).to.be.true;
             })
         })
       })
@@ -688,8 +716,8 @@ describe('02 - MotorcycleController', () => {
           nextStub,
         )
           .then(() => {
-            expect(res.status()?.calledOnceWith(c.ok));
-            expect(res.json()?.calledOnceWith(updateMotorcycleOutput));
+            expect(res.status()?.calledOnceWith(c.ok)).to.be.true;
+            expect(res.json()?.calledOnceWith(updateMotorcycleOutput)).to.be.true;
           })
       })
     })
@@ -715,7 +743,7 @@ describe('02 - MotorcycleController', () => {
             nextStub,
           )
             .then(() => {
-              expect(nextStub.calledOnceWith({ error: {} }));
+              expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
             })
         })
       })
@@ -739,7 +767,7 @@ describe('02 - MotorcycleController', () => {
             nextStub,
           )
             .then(() => {
-              expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound }));
+              expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound })).to.be.true;
             })
         })
       })
@@ -768,8 +796,8 @@ describe('02 - MotorcycleController', () => {
           nextStub,
         )
           .then(() => {
-            expect(res.status()?.calledOnceWith(c.noContent));
-            expect(res.json()?.calledOnceWith({}));
+            expect(res.status()?.calledOnceWith(c.noContent)).to.be.true;
+            expect(res.json()?.calledOnceWith({})).to.be.true;
           })
       })
     })
@@ -795,7 +823,7 @@ describe('02 - MotorcycleController', () => {
             nextStub,
           )
             .then(() => {
-              expect(nextStub.calledOnceWith({ error: {} }));
+              expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
             })
         })
       })
@@ -819,7 +847,7 @@ describe('02 - MotorcycleController', () => {
             nextStub,
           )
             .then(() => {
-              expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound }));
+              expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound })).to.be.true;
             })
         })
       })
@@ -846,7 +874,7 @@ describe('02 - MotorcycleController', () => {
           res as unknown as Response,
           nextStub,
         );
-        expect(nextStub.calledOnce);
+        expect(nextStub.calledOnce).to.be.true;
       })
     })
 
@@ -867,7 +895,7 @@ describe('02 - MotorcycleController', () => {
           res as unknown as Response,
           nextStub,
         )
-        expect(nextStub.calledOnceWith({ error: {} }));
+        expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
       })
     })
   })
@@ -912,7 +940,7 @@ describe('02 - MotorcycleController', () => {
           res as unknown as Response,
           nextStub,
         )
-        expect(nextStub.calledOnceWith({ error: {} }));
+        expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
       })
     })
   })
