@@ -11,6 +11,7 @@ export const handleDomainError = (
   next: NextFunction,
 ) => {
   if (err.code) {
+    // console.error(err);
     return res.status(err.code).json({ error: err.message });
   }
   return next(err);
