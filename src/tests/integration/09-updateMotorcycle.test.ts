@@ -63,21 +63,22 @@ describe('09 - Endpoint PUT /motorcycles/:id', () => {
             });
         });
     })
+  })
 
     describe('❎ Failure', () => {
 
       it('Outputs code 400 "Id must have 24 hexadecimal characters" if id is invalid', (done) => {
         request(server.getApp())
-          .put('/motorcycles/1')
-          .send(updateMotorcycleInput)
-          .expect(c.badRequest)
+        .put('/motorcycles/1')
+        .send(updateMotorcycleInput)
+        .expect(c.badRequest)
           .then((res) => {
             expect(res.body).toEqual({ error: m.invalidId });
             return done();
           });
         })
       })
-
+      
       it('Outputs code 400 if body is incomplete', (done) => {
         request(server.getApp())
           .put(`/motorcycles/${mockId}`)
@@ -93,6 +94,5 @@ describe('09 - Endpoint PUT /motorcycles/:id', () => {
             expect(res.body).toEqual({ error: m.notFound });
             return done();
           });
-      })
     })
 });
