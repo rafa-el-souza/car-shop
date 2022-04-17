@@ -22,7 +22,7 @@ export const handleZodDomainError = (
   res: Response,
   next: NextFunction,
 ) => {
-  console.error(err.error?.flatten().fieldErrors);
+  // console.error(err.error?.flatten().fieldErrors);
   const firstIssue = err.error?.issues[0];
   if (err.error instanceof ZodError) {
     return res.status(c.badRequest)
@@ -38,6 +38,7 @@ export const handleInternalError = (
   _next: NextFunction,
 ) => {
   console.log(_next);
+  // console.error(err.error);
   return res.status(c.internal)
     .json({ error: m.internal });
 };
