@@ -11,7 +11,6 @@ export const handleDomainError = (
   next: NextFunction,
 ) => {
   if (err.code) {
-    // console.error(err);
     return res.status(err.code).json({ error: err.message });
   }
   return next(err);
@@ -23,7 +22,6 @@ export const handleZodDomainError = (
   res: Response,
   next: NextFunction,
 ) => {
-  // console.error(err.error?.flatten().fieldErrors);
   const firstIssue = err.error?.issues[0];
   if (err.error instanceof ZodError) {
     return res.status(c.badRequest)
@@ -33,16 +31,12 @@ export const handleZodDomainError = (
 };
 
 export const handleInternalError = (
-  err: DomainError<null>,
+  _err: DomainError<null>,
   _req: Request,
   res: Response,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _next: NextFunction,
-) => {
-  console.log(_next);
-  // console.error(err.error);
-  return res.status(c.internal)
-    .json({ error: m.internal });
-};
+) => res.status(c.internal).json({ error: m.internal });
 
 export default {
   handleDomainError,
