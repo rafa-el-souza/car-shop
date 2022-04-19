@@ -7,7 +7,7 @@ export class CustomRouter<T> {
 
   constructor(
     private controller: GenericController<T>,
-    private route: string = controller.route,
+    private _route: string = controller.route,
   ) {
     this.router = Router();
     this.addGetRoutes();
@@ -18,11 +18,11 @@ export class CustomRouter<T> {
 
   private addGetRoutes = () => {
     this.router.get(
-      this.route,
+      this._route,
       this.controller.read,
     );
     this.router.get(
-      `${this.route}/:id`,
+      `${this._route}/:id`,
       this.controller.validateId,
       this.controller.readOne,
     );
@@ -30,7 +30,7 @@ export class CustomRouter<T> {
 
   private addPostRoutes = () => {
     this.router.post(
-      this.route,
+      this._route,
       this.controller.validateBody,
       this.controller.create,
     );
@@ -38,7 +38,7 @@ export class CustomRouter<T> {
 
   private addPutRoutes = () => {
     this.router.put(
-      `${this.route}/:id`,
+      `${this._route}/:id`,
       this.controller.validateId,
       this.controller.validateBody,
       this.controller.update,
@@ -47,7 +47,7 @@ export class CustomRouter<T> {
 
   private addDeleteRoutes = () => {
     this.router.delete(
-      `${this.route}/:id`,
+      `${this._route}/:id`,
       this.controller.validateId,
       this.controller.delete,
     );

@@ -16,7 +16,7 @@ export abstract class Controller<T> {
 
   validateBody = (
     req: Request<{ id: string; }>,
-    res: Response<T>,
+    _res: Response<T>,
     next: NextFunction,
   ): void => {
     const { body } = req;
@@ -30,7 +30,7 @@ export abstract class Controller<T> {
 
   validateId = (
     req: Request<{ id: string; }>,
-    res: Response<T>,
+    _res: Response<T>,
     next: NextFunction,
   ): void => {
     const { id } = req.params;
