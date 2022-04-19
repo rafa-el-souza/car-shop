@@ -1,9 +1,8 @@
 import sinon from 'sinon';
-import mongoose from 'mongoose';
 
 type MockResponse = {
-  status(): any;
-  json(): any;
+  status?(): any;
+  json?(): any;
 }
 
 export const nextStub = sinon.stub();
@@ -11,7 +10,7 @@ export const nextStub = sinon.stub();
 export const mockRequest = (body?: any, params?: { id?: string }) => ({ body, params });
 
 export const mockResponse = () => {
-  const res: MockResponse = { status: () => {}, json: () => {} };
+  const res: MockResponse = {};
   res.status = sinon.stub().returns(res);
   res.json = sinon.stub().returns(res);
   return res;
