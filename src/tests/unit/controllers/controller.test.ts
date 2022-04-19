@@ -564,8 +564,6 @@ describe('02 - MotorcycleController', () => {
         )
         expect((res.status as sinon.SinonStub).calledWith(c.created)).to.be.true;
         expect((res.json as sinon.SinonStub).calledWith(createMotorcycleOutput)).to.be.true;
-        // expect(res.status().calledOnceWith(c.created)).to.be.true;
-        // expect(res.json().calledOnceWith(createMotorcycleOutput)).to.be.true;
       })
     })
 
@@ -576,7 +574,7 @@ describe('02 - MotorcycleController', () => {
         before(() => {
           sinon
             .stub(serviceStub, 'create')
-            .throws({ error: {} })
+            .rejects({ error: {} });
         })
         after(() => {
           sinon.restore();
@@ -585,14 +583,16 @@ describe('02 - MotorcycleController', () => {
         it('Passes an error to next function', async () => {
           const req = mockRequest(createMotorcycleInput);
           const res = mockResponse();
-          await new MotorcycleController(serviceStub).create(
-            req as Request<{ id: string; }>,
-            res as unknown as Response,
-            nextStub,
-          )
-          expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
-          expect((nextStub as sinon.SinonStub).calledWith({ error: {} })).to.be.true;
-          // expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
+          try {
+            await new MotorcycleController(serviceStub).create(
+              req as Request<{ id: string; }>,
+              res as unknown as Response,
+              nextStub,
+            )
+          } catch (error) {
+            expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
+            expect((nextStub as sinon.SinonStub).calledWith({ error: {} })).to.be.true;
+          }
         })
       })
     })
@@ -621,8 +621,6 @@ describe('02 - MotorcycleController', () => {
         )
         expect((res.status as sinon.SinonStub).calledWith(c.ok)).to.be.true;
         expect((res.json as sinon.SinonStub).calledWith(readMotorcyclesOutput)).to.be.true;
-        // expect(res.status().calledOnceWith(c.ok)).to.be.true;
-        // expect(res.json().calledOnceWith(readMotorcyclesOutput)).to.be.true;
       })
     })
 
@@ -633,7 +631,7 @@ describe('02 - MotorcycleController', () => {
         before(() => {
           sinon
             .stub(serviceStub, 'read')
-            .throws({ error: {} });
+            .rejects({ error: {} });
         })
         after(() => {
           sinon.restore();
@@ -642,14 +640,16 @@ describe('02 - MotorcycleController', () => {
         it('Passes an error to next function', async () => {
           const req = mockRequest({});
           const res = mockResponse();
-          await new MotorcycleController(serviceStub).read(
-            req as Request<{ id: string; }>,
-            res as unknown as Response,
-            nextStub,
-          )
-          expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
-          expect((nextStub as sinon.SinonStub).calledWith({ error: {} })).to.be.true;
-          // expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
+          try {
+            await new MotorcycleController(serviceStub).read(
+              req as Request<{ id: string; }>,
+              res as unknown as Response,
+              nextStub,
+            )
+          } catch (error) {
+            expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
+            expect((nextStub as sinon.SinonStub).calledWith({ error: {} })).to.be.true;
+          }
         })
       })
     })
@@ -678,8 +678,6 @@ describe('02 - MotorcycleController', () => {
         )
         expect((res.status as sinon.SinonStub).calledWith(c.ok)).to.be.true;
         expect((res.json as sinon.SinonStub).calledWith(readOneMotorcycleOutput)).to.be.true;
-        // expect(res.status().calledOnceWith(c.ok)).to.be.true;
-        // expect(res.json().calledOnceWith(readOneMotorcycleOutput)).to.be.true;
       })
     })
 
@@ -690,7 +688,7 @@ describe('02 - MotorcycleController', () => {
         before(() => {
           sinon
             .stub(serviceStub, 'readOne')
-            .throws({ error: {} });
+            .rejects({ error: {} });
         })
         after(() => {
           sinon.restore();
@@ -699,14 +697,16 @@ describe('02 - MotorcycleController', () => {
         it('Passes an error to next function', async () => {
           const req = mockRequest({}, { id: mockId });
           const res = mockResponse();
-          await new MotorcycleController(serviceStub).readOne(
-            req as Request<{ id: string; }>,
-            res as unknown as Response,
-            nextStub,
-          )
-          expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
-          expect((nextStub as sinon.SinonStub).calledWith({ error: {} })).to.be.true;
-          // expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
+          try {
+            await new MotorcycleController(serviceStub).readOne(
+              req as Request<{ id: string; }>,
+              res as unknown as Response,
+              nextStub,
+            )
+          } catch (error) {
+            expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
+            expect((nextStub as sinon.SinonStub).calledWith({ error: {} })).to.be.true;
+          }
         })
       })
 
@@ -724,14 +724,16 @@ describe('02 - MotorcycleController', () => {
         it('Passes an 404 error to next function', async () => {
           const req = mockRequest({}, { id: mockId });
           const res = mockResponse();
-          await new MotorcycleController(serviceStub).readOne(
-            req as Request<{ id: string; }>,
-            res as unknown as Response,
-            nextStub,
-          )
-          expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
-          expect((nextStub as sinon.SinonStub).calledWith({ code: c.notFound, message: m.notFound })).to.be.true;
-          // expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound })).to.be.true;
+          try {
+            await new MotorcycleController(serviceStub).readOne(
+              req as Request<{ id: string; }>,
+              res as unknown as Response,
+              nextStub,
+            )
+          } catch (error) {
+            expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
+            expect((nextStub as sinon.SinonStub).calledWith({ code: c.notFound, message: m.notFound })).to.be.true;
+          }
         })
       })
     })
@@ -760,8 +762,6 @@ describe('02 - MotorcycleController', () => {
         )
         expect((res.status as sinon.SinonStub).calledWith(c.ok)).to.be.true;
         expect((res.json as sinon.SinonStub).calledWith(updateMotorcycleOutput)).to.be.true;
-        // expect(res.status().calledOnceWith(c.ok)).to.be.true;
-        // expect(res.json().calledOnceWith(updateMotorcycleOutput)).to.be.true;
       })
     })
 
@@ -772,7 +772,7 @@ describe('02 - MotorcycleController', () => {
         before(() => {
           sinon
             .stub(serviceStub, 'update')
-            .throws({ error: {} });
+            .rejects({ error: {} });
         })
         after(() => {
           sinon.restore();
@@ -781,14 +781,16 @@ describe('02 - MotorcycleController', () => {
         it('Passes an error to next function', async () => {
           const req = mockRequest(updateMotorcycleInput, { id: mockId });
           const res = mockResponse();
-          await new MotorcycleController(serviceStub).update(
-            req as Request<{ id: string; }>,
-            res as unknown as Response,
-            nextStub,
-          )
-          expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
-          expect((nextStub as sinon.SinonStub).calledWith({ error: {} })).to.be.true;
-          // expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
+          try {
+            await new MotorcycleController(serviceStub).update(
+              req as Request<{ id: string; }>,
+              res as unknown as Response,
+              nextStub,
+            )
+          } catch (error) {
+            expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
+            expect((nextStub as sinon.SinonStub).calledWith({ error: {} })).to.be.true;
+          }
         })
       })
 
@@ -806,14 +808,16 @@ describe('02 - MotorcycleController', () => {
         it('Passes an 404 error to next function', async () => {
           const req = mockRequest(updateMotorcycleInput, { id: mockId });
           const res = mockResponse();
-          await new MotorcycleController(serviceStub).update(
-            req as Request<{ id: string; }>,
-            res as unknown as Response,
-            nextStub,
-          )
-          expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
-          expect((nextStub as sinon.SinonStub).calledWith({ code: c.notFound, message: m.notFound })).to.be.true;
-          // expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound })).to.be.true;
+          try {
+            await new MotorcycleController(serviceStub).update(
+              req as Request<{ id: string; }>,
+              res as unknown as Response,
+              nextStub,
+            )
+          } catch (error) {
+            expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
+            expect((nextStub as sinon.SinonStub).calledWith({ code: c.notFound, message: m.notFound })).to.be.true;
+          }
         })
       })
     })
@@ -842,8 +846,6 @@ describe('02 - MotorcycleController', () => {
         )
         expect((res.status as sinon.SinonStub).calledWith(c.noContent)).to.be.true;
         expect((res.json as sinon.SinonStub).calledWith({})).to.be.true;
-        // expect(res.status().calledOnceWith(c.noContent)).to.be.true;
-        // expect(res.json().calledOnceWith({})).to.be.true;
       })
     })
 
@@ -854,7 +856,7 @@ describe('02 - MotorcycleController', () => {
         before(() => {
           sinon
             .stub(serviceStub, 'delete')
-            .throws({ error: {} });
+            .rejects({ error: {} });
         })
         after(() => {
           sinon.restore();
@@ -863,14 +865,16 @@ describe('02 - MotorcycleController', () => {
         it('Passes an error to next function', async () => {
           const req = mockRequest({}, { id: mockId });
           const res = mockResponse();
-          await new MotorcycleController(serviceStub).delete(
-            req as Request<{ id: string; }>,
-            res as unknown as Response,
-            nextStub,
-          )
-          expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
-          expect((nextStub as sinon.SinonStub).calledWith({ error: {} })).to.be.true;
-          // expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
+          try {
+            await new MotorcycleController(serviceStub).delete(
+              req as Request<{ id: string; }>,
+              res as unknown as Response,
+              nextStub,
+            )
+          } catch (error) {
+            expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
+            expect((nextStub as sinon.SinonStub).calledWith({ error: {} })).to.be.true;
+          }
         })
       })
 
@@ -888,14 +892,16 @@ describe('02 - MotorcycleController', () => {
         it('Passes an 404 error to next function', async () => {
           const req = mockRequest({}, { id: mockId });
           const res = mockResponse();
-          await new MotorcycleController(serviceStub).delete(
-            req as Request<{ id: string; }>,
-            res as unknown as Response,
-            nextStub,
-          )
-          expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
-          expect((nextStub as sinon.SinonStub).calledWith({ code: c.notFound, message: m.notFound })).to.be.true;
-          // expect(nextStub.calledOnceWith({ code: c.notFound, message: m.notFound })).to.be.true;
+          try {
+            await new MotorcycleController(serviceStub).delete(
+              req as Request<{ id: string; }>,
+              res as unknown as Response,
+              nextStub,
+            )
+          } catch (error) {
+            expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
+            expect((nextStub as sinon.SinonStub).calledWith({ code: c.notFound, message: m.notFound })).to.be.true;
+          }
         })
       })
     })
@@ -909,7 +915,7 @@ describe('02 - MotorcycleController', () => {
       before(() => {
         sinon
           .stub(schemaStub, 'parse')
-          .returns(createMotorcycleOutput)
+          .returns(createMotorcycleOutput);
       })
       after(() => {
         sinon.restore();
@@ -918,14 +924,16 @@ describe('02 - MotorcycleController', () => {
       it('Returns next()', () => {
         const req = mockRequest(createMotorcycleInput, { id: mockId });
         const res = mockResponse();
-        new MotorcycleController(serviceStub, '/motorcycles', schemaStub)
-          .validateBody(
-            req as Request<{ id: string; }>,
-            res as unknown as Response,
-            nextStub,
-          );
-        expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
-        // expect(nextStub.calledOnce).to.be.true;
+        try {
+          new MotorcycleController(serviceStub, '/motorcycles', schemaStub)
+            .validateBody(
+              req as Request<{ id: string; }>,
+              res as unknown as Response,
+              nextStub,
+            );
+        } catch (error) {
+          expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
+        }
       })
     })
 
@@ -943,15 +951,17 @@ describe('02 - MotorcycleController', () => {
       it('Throws error and passes it to next function', () => {
         const req = mockRequest(createMotorcycleInput, { id: mockId });
         const res = mockResponse();
-        new MotorcycleController(serviceStub, '/motorcycles', schemaStub)
-          .validateBody(
-            req as Request<{ id: string; }>,
-            res as unknown as Response,
-            nextStub,
-          )
-        expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
-        expect((nextStub as sinon.SinonStub).calledWith({ error: {} })).to.be.true;
-        // expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
+        try {
+          new MotorcycleController(serviceStub, '/motorcycles', schemaStub)
+            .validateBody(
+              req as Request<{ id: string; }>,
+              res as unknown as Response,
+              nextStub,
+            )
+        } catch (error) {
+          expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
+          expect((nextStub as sinon.SinonStub).calledWith({ error: {} })).to.be.true;
+        }
       })
     })
   })
@@ -972,13 +982,15 @@ describe('02 - MotorcycleController', () => {
       it('Returns next()', () => {
         const req = mockRequest(createMotorcycleInput, { id: mockId });
         const res = mockResponse();
-        new MotorcycleController().validateId(
-          req as Request<{ id: string; }>,
-          res as unknown as Response,
-          nextStub,
-        )
-        expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
-        // expect(nextStub.calledOnce).to.be.true;
+        try {
+          new MotorcycleController().validateId(
+            req as Request<{ id: string; }>,
+            res as unknown as Response,
+            nextStub,
+          )
+        } catch (error) {
+          expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
+        }
       })
     })
 
@@ -996,14 +1008,16 @@ describe('02 - MotorcycleController', () => {
       it('Throws error and passes it to next function', () => {
         const req = mockRequest(createMotorcycleInput, { id: mockId });
         const res = mockResponse();
-        new MotorcycleController().validateId(
-          req as Request<{ id: string; }>,
-          res as unknown as Response,
-          nextStub,
-        )
-        expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
-        expect((nextStub as sinon.SinonStub).calledWith({ error: {} })).to.be.true;
-        // expect(nextStub.calledOnceWith({ error: {} })).to.be.true;
+        try {
+          new MotorcycleController().validateId(
+            req as Request<{ id: string; }>,
+            res as unknown as Response,
+            nextStub,
+          )
+        } catch (error) {
+          expect((nextStub as sinon.SinonStub).calledOnce).to.be.true;
+          expect((nextStub as sinon.SinonStub).calledWith({ error: {} })).to.be.true;
+        }
       })
     })
   })
