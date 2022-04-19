@@ -2,21 +2,24 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { CarService } from '../../../services';
 import { CarModel } from '../../../models';
-import { createCarInput, createCarOutput, mockId, readCarsOutput, readOneCarOutput, updateCarInput, updateCarOutput } from '../utils';
+import { createCarInput, createCarOutput, deleteCarOutput, mockId, readCarsOutput, readOneCarOutput, updateCarInput, updateCarOutput } from '../utils';
 
 describe('01 - CarService', () => {
+  const modelStub = new CarModel();
 
   describe('a) CarService.create', () => {
-    const stub = sinon.stub(new CarModel(), 'create');
+
     before(() => {
-      stub.resolves(createCarOutput);
+      sinon
+        .stub(modelStub, 'create')
+        .resolves(createCarOutput);
     })
     after(() => {
-      stub.reset();
+      sinon.restore();
     })
 
     it('Returns created car', () => {
-      new CarService().create({ ...createCarInput })
+      new CarService(modelStub).create(createCarInput)
         .then((output) => {
           expect(output).to.be.an('object');
           expect(output).to.have.all.keys(['model', 'year', 'color', 'buyValue', "doorsQty", "seatsQty", '_id']);
@@ -26,16 +29,18 @@ describe('01 - CarService', () => {
   })
 
   describe('b) CarService.read', () => {
-    const stub = sinon.stub(new CarModel(), 'read');
+
     before(() => {
-      stub.resolves(readCarsOutput);
+      sinon
+        .stub(modelStub, 'read')
+        .resolves(readCarsOutput);
     })
     after(() => {
-      stub.reset();
+      sinon.restore();
     })
 
     it('Returns list of cars', () => {
-      new CarService().read()
+      new CarService(modelStub).read()
         .then((output) => {
           expect(output).to.be.an('array');
           expect(output[0]).to.have.all.keys(['model', 'year', 'color', 'buyValue', "doorsQty", "seatsQty", '_id']);
@@ -45,16 +50,18 @@ describe('01 - CarService', () => {
   })
 
   describe('c) CarService.readOne', () => {
-    const stub = sinon.stub(new CarModel(), 'readOne');
+
     before(() => {
-      stub.resolves(readOneCarOutput);
+      sinon
+        .stub(modelStub, 'readOne')
+        .resolves(readOneCarOutput);
     })
     after(() => {
-      stub.reset();
+      sinon.restore();
     })
 
     it('Returns one car', () => {
-      new CarService().readOne(mockId)
+      new CarService(modelStub).readOne(mockId)
         .then((output) => {
           expect(output).to.be.an('object');
           expect(output).to.have.all.keys(['model', 'year', 'color', 'buyValue', "doorsQty", "seatsQty", '_id']);
@@ -64,16 +71,18 @@ describe('01 - CarService', () => {
   })
 
   describe('d) CarService.update', () => {
-    const stub = sinon.stub(new CarModel(), 'update');
+
     before(() => {
-      stub.resolves(updateCarOutput);
+      sinon
+        .stub(modelStub, 'update')
+        .resolves(updateCarOutput);
     })
     after(() => {
-      stub.reset();
+      sinon.restore();
     })
 
     it('Returns updated car', () => {
-      new CarService().update(mockId, updateCarInput)
+      new CarService(modelStub).update(mockId, updateCarInput)
         .then((output) => {
           expect(output).to.be.an('object');
           expect(output).to.have.all.keys(['model', 'year', 'color', 'buyValue', "doorsQty", "seatsQty", '_id']);
@@ -82,17 +91,19 @@ describe('01 - CarService', () => {
     })
   })
 
-  describe('e) CarService.delete', () => { // bad test
-    const stub = sinon.stub(new CarModel(), 'update');
+  describe('e) CarService.delete', () => {
+
     before(() => {
-      stub.resolves(null);
+      sinon
+        .stub(modelStub, 'delete')
+        .resolves(null);
     })
     after(() => {
-      stub.reset();
+      sinon.restore();
     })
 
     it('Returns nothing', () => {
-      new CarService().delete(mockId)
+      new CarService(modelStub).delete(mockId)
         .then((output) => {
           expect(output).to.be('null');
         });
