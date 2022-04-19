@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { CarService } from '../../../services';
 import { CarModel } from '../../../models';
-import { createCarInput, createCarOutput, deleteCarOutput, mockId, readCarsOutput, readOneCarOutput, updateCarInput, updateCarOutput } from '../utils';
+import { createCarInput, createCarOutput, mockId, readCarsOutput, readOneCarOutput, updateCarInput, updateCarOutput } from '../utils';
 
 describe('01 - CarService', () => {
   const modelStub = new CarModel();

@@ -35,7 +35,6 @@ import {
 } from '../utils';
 
 import {
-  Motorcycle,
   StatusCodes as c
 } from '../../../interfaces';
 
