@@ -6,11 +6,9 @@ type MockResponse = {
   json(): any;
 }
 
-export const mongooseValidatorStub = sinon.stub(mongoose.Types.ObjectId, 'isValid');
-
 export const nextStub = sinon.stub();
 
-export const mockRequest = (body?: any, params?: { id: string }) => ({ body, params });
+export const mockRequest = (body?: any, params?: { id?: string }) => ({ body, params });
 
 export const mockResponse = () => {
   const res: MockResponse = { status: () => {}, json: () => {} };
