@@ -98,12 +98,16 @@ export const createMotorcycleInput = {
   "engineCapacity": 500,
 }
 
+enum mockMotorcycle {
+  category = 'Trail',
+}
+
 export const createMotorcycleOutput = {
   "model": "Dream",
   "year": 2020,
   "color": "Black",
   "buyValue": 4000,
-  "category": 'Trail',
+  "category": mockMotorcycle.category,
   "engineCapacity": 500,
   "_id": mockId,
 }
@@ -114,7 +118,7 @@ export const readMotorcyclesOutput = [
     "year": 2020,
     "color": "Black",
     "buyValue": 4000,
-    "category": 'Trail',
+    "category": mockMotorcycle.category,
     "engineCapacity": 500,
     "_id": mockId,
   }
@@ -125,7 +129,7 @@ export const readOneMotorcycleOutput = {
   "year": 2020,
   "color": "Black",
   "buyValue": 4000,
-  "category": 'Trail',
+  "category": mockMotorcycle.category,
   "engineCapacity": 500,
   "_id": mockId,
 }
@@ -144,7 +148,7 @@ export const updateMotorcycleOutput = {
   "year": 2020,
   "color": "Black",
   "buyValue": 4000,
-  "category": 'Trail',
+  "category": mockMotorcycle.category,
   "engineCapacity": 500,
   _id: mockId,
 }
@@ -154,7 +158,7 @@ export const deleteMotorcycleOutput = {
   "year": 2020,
   "color": "Black",
   "buyValue": 4000,
-  "category": 'Trail',
+  "category": mockMotorcycle.category,
   "engineCapacity": 500,
   _id: mockId,
 }
