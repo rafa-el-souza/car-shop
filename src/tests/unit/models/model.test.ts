@@ -1,10 +1,11 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 import mongoose from 'mongoose';
-import { CarModel } from '../../../models';
+import { CarModel } from '../../../app/models';
 import { createCarInput, createCarOutput, readCarsOutput, readOneCarOutput, updateCarInput, updateCarOutput } from '../utils';
 
-describe('01 - CarModel', () => {
+describe('Car Model', () => {
+
   describe('a) CarModel.create', () => {
     const stub = sinon.stub(mongoose.Model, 'create');
     before(() => {
@@ -16,15 +17,16 @@ describe('01 - CarModel', () => {
     it('Returns created car', () => {
 
       new CarModel().create({ ...createCarInput })
-      .then((output) => {
-        expect(output).to.be.an('object');
-        expect(output).to.have.all.keys(['model', 'year', 'color', 'buyValue', "doorsQty", "seatsQty", '_id']);
-        expect(output).to.be.deep.equal(createCarOutput);
-      });
+        .then((output) => {
+          expect(output).to.be.an('object');
+          expect(output).to.have.all.keys(['model', 'year', 'color', 'buyValue', "doorsQty", "seatsQty", '_id']);
+          expect(output).to.be.deep.equal(createCarOutput);
+        });
     })
   })
 
   describe('b) CarModel.read', () => {
+
     const stub = sinon.stub(mongoose.Model, 'find');
     before(() => {
       stub.resolves(readCarsOutput);
@@ -43,6 +45,7 @@ describe('01 - CarModel', () => {
   })
 
   describe('c) CarModel.readOne', () => {
+
     const stub = sinon.stub(mongoose.Model, 'findById');
     before(() => {
       stub.resolves(readOneCarOutput);
@@ -61,6 +64,7 @@ describe('01 - CarModel', () => {
   })
 
   describe('d) CarModel.update', () => {
+
     const stub = sinon.stub(mongoose.Model, 'findOneAndUpdate');
     before(() => {
       stub.resolves(updateCarOutput);
@@ -79,6 +83,7 @@ describe('01 - CarModel', () => {
   })
 
   describe('e) CarModel.delete', () => {
+
     const stub = sinon.stub(mongoose.Model, 'findOneAndDelete');
     before(() => {
       stub.resolves(null);

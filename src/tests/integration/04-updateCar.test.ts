@@ -1,14 +1,14 @@
 import request from 'supertest';
 
-import connection from '../../connection';
+import connection from '../../db/connection';
 import { clearDatabase, closeDatabase } from './utils/db';
 
-import server from '../../server';
+import server from '../../api/server';
 
 import { createCarInput, mockId, updateCarInput } from './utils/mocks';
 
-import { StatusCodes as c } from '../../interfaces';
-import { ErrorMessage as m } from '../../errors';
+import { StatusCodes as c } from '../../app/helpers/interfaces';
+import { ErrorMessage as m } from '../../app/helpers/errors';
 
 describe('04 - Endpoint PUT /cars/:id', () => {
 
@@ -61,38 +61,38 @@ describe('04 - Endpoint PUT /cars/:id', () => {
 
               return done();
             });
-      });
+        });
     })
   })
 
-    describe('❎ Failure', () => {
+  describe('❎ Failure', () => {
 
-      it('Outputs code 400 "Id must have 24 hexadecimal characters" if id is invalid', (done) => {
-        request(server.getApp())
-          .put('/cars/1')
-          .send(updateCarInput)
-          .expect(c.badRequest)
-          .then((res) => {
-            expect(res.body).toEqual({ error: m.invalidId });
-            return done();
-          });
-      })
+    it('Outputs code 400 "Id must have 24 hexadecimal characters" if id is invalid', (done) => {
+      request(server.getApp())
+        .put('/cars/1')
+        .send(updateCarInput)
+        .expect(c.badRequest)
+        .then((res) => {
+          expect(res.body).toEqual({ error: m.invalidId });
+          return done();
+        });
+    })
 
-      it('Outputs code 400 if body is incomplete', (done) => {
-        request(server.getApp())
-          .put(`/cars/${mockId}`)
-          .expect(c.badRequest, done);
-      })
+    it('Outputs code 400 if body is incomplete', (done) => {
+      request(server.getApp())
+        .put(`/cars/${mockId}`)
+        .expect(c.badRequest, done);
+    })
 
-      it('Outputs code 404 "Object not found" if id is valid but has no reference in the db', (done) => {
-        request(server.getApp())
-          .put(`/cars/${mockId}`)
-          .send(updateCarInput)
-          .expect(c.notFound)
-          .then((res) => {
-            expect(res.body).toEqual({ error: m.notFound });
-            return done();
-          });
+    it('Outputs code 404 "Object not found" if id is valid but has no reference in the db', (done) => {
+      request(server.getApp())
+        .put(`/cars/${mockId}`)
+        .send(updateCarInput)
+        .expect(c.notFound)
+        .then((res) => {
+          expect(res.body).toEqual({ error: m.notFound });
+          return done();
+        });
     })
   })
 });

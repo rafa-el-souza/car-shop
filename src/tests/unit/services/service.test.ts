@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { CarService } from '../../../services';
-import { CarModel } from '../../../models';
+import { CarService } from '../../../app/services';
+import { CarModel } from '../../../app/models';
 import { createCarInput, createCarOutput, mockId, readCarsOutput, readOneCarOutput, updateCarInput, updateCarOutput } from '../utils';
 
-describe('01 - CarService', () => {
+describe('Car Service', () => {
   const modelStub = new CarModel();
 
   describe('a) CarService.create', () => {
