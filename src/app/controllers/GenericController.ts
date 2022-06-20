@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 import { ZodObject, ZodRawShape } from 'zod';
 
 import { Service as GenericService } from '../services';
-import { ErrorMessage as m } from '../errors';
-import { StatusCodes as c } from '../interfaces';
+import { ErrorMessage as m } from '../helpers/errors';
+import { StatusCodes as c } from '../helpers/interfaces';
 
 export abstract class Controller<T> {
   abstract route: string;
