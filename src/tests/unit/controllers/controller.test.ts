@@ -6,12 +6,12 @@ import mongoose from 'mongoose';
 import {
   CarController,
   MotorcycleController
-} from '../../../controllers';
+} from '../../../app/controllers';
 
 import {
   CarService,
   MotorcycleService
-} from '../../../services';
+} from '../../../app/services';
 
 import {
   createCarInput,
@@ -36,16 +36,16 @@ import {
 
 import {
   StatusCodes as c
-} from '../../../interfaces';
+} from '../../../app/helpers/interfaces';
 
-import { ErrorMessage as m } from '../../../errors';
-import { carSchema, motorcycleSchema } from '../../../validations';
+import { ErrorMessage as m } from '../../../app/helpers/errors';
+import { carSchema, motorcycleSchema } from '../../../app/helpers/validations';
 
-describe('01 - CarController', () => {
+describe('Car Controller', () => {
   const serviceStub = new CarService();
 
   describe('a) CarController.create', () => {
-    
+
     describe('Success', () => {
 
       before(() => {
@@ -129,7 +129,7 @@ describe('01 - CarController', () => {
     })
 
     describe('Failure', () => {
-      
+
       describe('Internal error', () => {
 
         before(() => {
@@ -469,7 +469,7 @@ describe('01 - CarController', () => {
       })
     })
   })
-  
+
   describe('g) CarController.validateId', () => {
 
     describe('Success', () => {
@@ -537,7 +537,7 @@ describe('01 - CarController', () => {
   })
 })
 
-describe('02 - MotorcycleController', () => {
+describe('Motorcycle Controller', () => {
   const serviceStub = new MotorcycleService();
 
   describe('a) MotorcycleController.create', () => {
@@ -624,9 +624,9 @@ describe('02 - MotorcycleController', () => {
     })
 
     describe('Failure', () => {
-      
+
       describe('Internal error', () => {
-        
+
         before(() => {
           sinon
             .stub(serviceStub, 'read')

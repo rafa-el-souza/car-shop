@@ -1,13 +1,13 @@
 import request from 'supertest';
 
-import connection from '../../connection';
+import connection from '../../db/connection';
 import { clearDatabase, closeDatabase } from './utils/db';
 
-import server from '../../server';
+import server from '../../api/server';
 
 import { createMotorcycleInput, motorcycleInvalidCategory, motorcycleMoreThanMaximumEngineCapacity, motorcycleNegativeEngineCapacity, motorcycleNotIntegerEngineCapacity, motorcycleLessThan50EngineCapacity, motorcycleNoModel, motorcycleNoYear, motorcycleNoColor, motorcycleNoBuyValue, motorcycleNoCategory, motorcycleNoEngineCapacity, motorcycleWrongTypeModel, motorcycleWrongTypeYear, motorcycleWrongTypeColor, motorcycleWrongTypeBuyValue, motorcycleWrongTypeCategory, motorcycleWrongTypeEngineCapacity } from './utils/mocks';
 
-import { StatusCodes as c } from '../../interfaces';
+import { StatusCodes as c } from '../../app/helpers/interfaces';
 
 describe('06 - Endpoint POST /motorcycles', () => {
 

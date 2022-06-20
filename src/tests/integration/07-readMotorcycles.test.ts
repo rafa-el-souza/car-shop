@@ -1,13 +1,13 @@
 import request from 'supertest';
 
-import connection from '../../connection';
+import connection from '../../db/connection';
 import { clearDatabase, closeDatabase } from './utils/db';
 
-import server from '../../server';
+import server from '../../api/server';
 
 import { createMotorcycleInput } from './utils/mocks';
 
-import { StatusCodes as c } from '../../interfaces';
+import { StatusCodes as c } from '../../app/helpers/interfaces';
 
 describe('07 - Endpoint GET /motorcycles', () => {
 

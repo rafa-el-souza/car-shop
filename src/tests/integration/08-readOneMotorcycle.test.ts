@@ -1,14 +1,14 @@
 import request from 'supertest';
 
-import connection from '../../connection';
+import connection from '../../db/connection';
 import { clearDatabase, closeDatabase } from './utils/db';
 
-import server from '../../server';
+import server from '../../api/server';
 
 import { createMotorcycleInput, mockId } from './utils/mocks';
 
-import { StatusCodes as c } from '../../interfaces';
-import { ErrorMessage as m } from '../../errors';
+import { StatusCodes as c } from '../../app/helpers/interfaces';
+import { ErrorMessage as m } from '../../app/helpers/errors';
 
 describe('08 - Endpoint GET /motorcycles/:id', () => {
 
@@ -42,7 +42,7 @@ describe('08 - Endpoint GET /motorcycles/:id', () => {
         });
     })
   })
-    
+
   describe('❎ Failure', () => {
 
     it('Outputs code 400 "Id must have 24 hexadecimal characters" if id is invalid', (done) => {

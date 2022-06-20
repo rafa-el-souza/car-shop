@@ -1,14 +1,14 @@
 import request from 'supertest';
 
-import connection from '../../connection';
+import connection from '../../db/connection';
 import { clearDatabase, closeDatabase } from './utils/db';
 
-import server from '../../server';
+import server from '../../api/server';
 
 import { createMotorcycleInput, mockId, updateMotorcycleInput } from './utils/mocks';
 
-import { StatusCodes as c } from '../../interfaces';
-import { ErrorMessage as m } from '../../errors';
+import { StatusCodes as c } from '../../app/helpers/interfaces';
+import { ErrorMessage as m } from '../../app/helpers/errors';
 
 describe('09 - Endpoint PUT /motorcycles/:id', () => {
 
@@ -65,34 +65,34 @@ describe('09 - Endpoint PUT /motorcycles/:id', () => {
     })
   })
 
-    describe('❎ Failure', () => {
+  describe('❎ Failure', () => {
 
-      it('Outputs code 400 "Id must have 24 hexadecimal characters" if id is invalid', (done) => {
-        request(server.getApp())
+    it('Outputs code 400 "Id must have 24 hexadecimal characters" if id is invalid', (done) => {
+      request(server.getApp())
         .put('/motorcycles/1')
         .send(updateMotorcycleInput)
         .expect(c.badRequest)
-          .then((res) => {
-            expect(res.body).toEqual({ error: m.invalidId });
-            return done();
-          });
-        })
-      })
-      
-      it('Outputs code 400 if body is incomplete', (done) => {
-        request(server.getApp())
-          .put(`/motorcycles/${mockId}`)
-          .expect(c.badRequest, done);
-      })
-
-      it('Outputs code 404 "Object not found" if id is valid but has no reference in the db', (done) => {
-        request(server.getApp())
-          .put(`/motorcycles/${mockId}`)
-          .send(updateMotorcycleInput)
-          .expect(c.notFound)
-          .then((res) => {
-            expect(res.body).toEqual({ error: m.notFound });
-            return done();
-          });
+        .then((res) => {
+          expect(res.body).toEqual({ error: m.invalidId });
+          return done();
+        });
     })
+  })
+
+  it('Outputs code 400 if body is incomplete', (done) => {
+    request(server.getApp())
+      .put(`/motorcycles/${mockId}`)
+      .expect(c.badRequest, done);
+  })
+
+  it('Outputs code 404 "Object not found" if id is valid but has no reference in the db', (done) => {
+    request(server.getApp())
+      .put(`/motorcycles/${mockId}`)
+      .send(updateMotorcycleInput)
+      .expect(c.notFound)
+      .then((res) => {
+        expect(res.body).toEqual({ error: m.notFound });
+        return done();
+      });
+  })
 });
