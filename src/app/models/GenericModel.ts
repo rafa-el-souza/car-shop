@@ -1,6 +1,6 @@
 import { Model as M, Document } from 'mongoose';
 
-import { Model as IModel } from '../interfaces';
+import { Model as IModel } from '../helpers/interfaces';
 
 export abstract class Model<T> implements IModel<T> {
   constructor(
