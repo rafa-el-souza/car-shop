@@ -1,12 +1,12 @@
-import App from './app';
+import App from './api';
 
 import {
   handleDomainError,
   handleInternalError,
   handleZodDomainError,
-} from './errors';
+} from '../app/helpers/errors';
 
-import { CarFactory, MotorcycleFactory } from './factories';
+import { CarFactory, MotorcycleFactory } from '../app/helpers/factories';
 
 const server = new App();
 
