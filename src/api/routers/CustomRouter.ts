@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { Controller as GenericController } from '../controllers';
+import { Controller as GenericController } from '../../app/controllers';
 
 export class CustomRouter<T> {
   public router: Router;
