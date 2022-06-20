@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
 
-import { DomainError, StatusCodes as c } from '../interfaces';
-import { ErrorMessage as m } from './ErrorMessages';
+import { DomainError, StatusCodes as c } from '../../app/helpers/interfaces';
+import { ErrorMessage as m } from '../../app/helpers/errors/ErrorMessages';
 
 export const handleDomainError = (
   err: DomainError<null>,
