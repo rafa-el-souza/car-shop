@@ -1,7 +1,7 @@
 import { Schema, model as createModel, Document } from 'mongoose';
 
 import { Model as GenericModel } from './GenericModel';
-import { Motorcycle as MotorcycleType } from '../validations';
+import { Motorcycle as MotorcycleType } from '../helpers/validations';
 
 export interface MotorcycleDocument extends MotorcycleType, Document { }
 
