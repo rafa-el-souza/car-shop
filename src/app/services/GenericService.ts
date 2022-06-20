@@ -1,4 +1,4 @@
-import { Model as IModel } from '../interfaces';
+import { Model as IModel } from '../helpers/interfaces';
 
 export abstract class Service<T> {
   constructor(
