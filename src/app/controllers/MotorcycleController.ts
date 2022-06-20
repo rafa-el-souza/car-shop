@@ -2,9 +2,9 @@ import { Controller as GenericController } from './GenericController';
 
 import { MotorcycleService } from '../services';
 
-import { motorcycleSchema } from '../validations';
+import { motorcycleSchema } from '../helpers/validations';
 
-import { Motorcycle } from '../interfaces';
+import { Motorcycle } from '../helpers/interfaces';
 
 export class MotorcycleController extends GenericController<Motorcycle> {
   private _route: string;

@@ -2,9 +2,9 @@ import { Controller as GenericController } from './GenericController';
 
 import { CarService } from '../services';
 
-import { carSchema } from '../validations';
+import { carSchema } from '../helpers/validations';
 
-import { Car } from '../interfaces';
+import { Car } from '../helpers/interfaces';
 
 export class CarController extends GenericController<Car> {
   private _route: string;
