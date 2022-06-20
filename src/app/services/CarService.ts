@@ -2,7 +2,7 @@ import GenericService from './GenericService';
 
 import { CarModel } from '../models';
 
-import { Car } from '../interfaces';
+import { Car } from '../helpers/interfaces';
 
 export class CarService extends GenericService<Car> {
   constructor(
