@@ -1,2 +1,1 @@
-export * from './ErrorMessages';
-export * from '../../../api/middlewares/ErrorMiddleware';
+export * from './errorMessages';
