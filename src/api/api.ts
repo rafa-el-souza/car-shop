@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 import connectToDatabase from '../db/connection';
 
-class App {
+class Api {
   public app: express.Application;
 
   constructor() {
@@ -26,4 +26,4 @@ class App {
   }
 }
 
-export default App;
+export default Api;
