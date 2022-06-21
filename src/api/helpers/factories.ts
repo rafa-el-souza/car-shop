@@ -1,6 +1,6 @@
-import { CarController, MotorcycleController } from '../../controllers';
-import { CustomRouter } from '../../../api/routers';
-import { Car, Motorcycle } from '../interfaces';
+import { CarController, MotorcycleController } from '../../app/controllers';
+import { CustomRouter } from '../routers';
+import { Car, Motorcycle } from '../../app/helpers/interfaces';
 
 export const CarFactory = () => new CustomRouter<Car>(new CarController());
 
