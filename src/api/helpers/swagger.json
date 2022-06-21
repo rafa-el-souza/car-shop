@@ -1,0 +1,621 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Car Shop API",
+    "description": "A RESTful API for a vehicle shop. Developed during Trybe's backend module.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Rafael Souza",
+      "email": "rafa-el-souza.developer@gmail.com",
+      "servers": [
+        "http: //localhost:3001"
+      ]
+    }
+  },
+  "paths": {
+    "/cars": {
+      "get": {
+        "summary": "Get all cars in the database.",
+        "description": "Returns an array with all cars in the database.",
+        "tags": [
+          "Cars"
+        ],
+        "responses": {
+          "200": {
+            "description": "Use this route to get all cars from the database.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Car"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Car registration",
+        "description": "Use this route to add new cars to the database.",
+        "tags": [
+          "Cars"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCarInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request: one or more invalid fields on the request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Invalid Input": {
+                    "value": {
+                      "error": "Pertinent input validation error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/{id}": {
+      "put": {
+        "summary": "Update car by id",
+        "description": "Use this route to update a car's data by its id.",
+        "tags": [
+          "Cars"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "A car's unique id.",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Invalid Id": {
+                    "value": {
+                      "error": "Id must have 24 hexadecimal characters."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Not Found": {
+                    "value": {
+                      "error": "Object not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete car by id",
+        "description": "Use this route to delete a car's data by its id.",
+        "tags": [
+          "Cars"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "A car's unique id.",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content success."
+          },
+          "400": {
+            "description": "Invalid id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Invalid Id": {
+                    "value": {
+                      "error": "Id must have 24 hexadecimal characters."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Not Found": {
+                    "value": {
+                      "error": "Object not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Search car by id",
+        "description": "Use this route to search for a car by its id.",
+        "tags": [
+          "Cars"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "A car's unique id.",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Invalid Id": {
+                    "value": {
+                      "error": "Id must have 24 hexadecimal characters."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Not Found": {
+                    "value": {
+                      "error": "Object not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/motorcycles": {
+      "get": {
+        "summary": "Get all motorcycles in the database.",
+        "description": "Returns an array with all motorcycles in the database.",
+        "tags": [
+          "Motorcycles"
+        ],
+        "responses": {
+          "200": {
+            "description": "Use this route to get all motorcycles from the database.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Motorcycle"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Motorcycle registration",
+        "description": "Use this route to add new motorcycles to the database.",
+        "tags": [
+          "Motorcycles"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMotorcycleInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Motorcycle"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request: one or more invalid fields on the request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Invalid Input": {
+                    "value": {
+                      "error": "Pertinent input validation error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/motorcycles/{id}": {
+      "put": {
+        "summary": "Update motorcycle by id",
+        "description": "Use this route to update a motorcycle's data by its id.",
+        "tags": [
+          "Motorcycles"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "A motorcycles's unique id.",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Motorcycle"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Invalid Id": {
+                    "value": {
+                      "error": "Id must have 24 hexadecimal characters."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Motorcycle not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Not Found": {
+                    "value": {
+                      "error": "Object not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete motorcycle by id",
+        "description": "Use this route to delete a motorcycle's data by its id.",
+        "tags": [
+          "Motorcycles"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "A motorcycle's unique id.",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content success."
+          },
+          "400": {
+            "description": "Invalid id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Invalid Id": {
+                    "value": {
+                      "error": "Id must have 24 hexadecimal characters."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Motorcycle not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Not Found": {
+                    "value": {
+                      "error": "Object not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Search motorcycle by id",
+        "description": "Use this route to search for a motorcycle by its id.",
+        "tags": [
+          "Motorcycles"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "A motorcycle's unique id.",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Motorcycle"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Invalid Id": {
+                    "value": {
+                      "error": "Id must have 24 hexadecimal characters."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Motorcycle not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Not Found": {
+                    "value": {
+                      "error": "Object not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateCarInput": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          },
+          "color": {
+            "type": "string"
+          },
+          "buyValue": {
+            "type": "number"
+          },
+          "doorsQty": {
+            "type": "number"
+          },
+          "seatsQty": {
+            "type": "number"
+          }
+        }
+      },
+      "CreateMotorcycleInput": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          },
+          "color": {
+            "type": "string"
+          },
+          "buyValue": {
+            "type": "number"
+          },
+          "category": {
+            "type": "string"
+          },
+          "engineCapacity": {
+            "type": "number"
+          }
+        }
+      },
+      "Motorcycle": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          },
+          "color": {
+            "type": "string"
+          },
+          "buyValue": {
+            "type": "number"
+          },
+          "category": {
+            "type": "string"
+          },
+          "engineCapacity": {
+            "type": "number"
+          },
+          "_id": {
+            "type": "string"
+          }
+        }
+      },
+      "Car": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          },
+          "color": {
+            "type": "string"
+          },
+          "buyValue": {
+            "type": "number"
+          },
+          "doorsQty": {
+            "type": "number"
+          },
+          "seatsQty": {
+            "type": "number"
+          },
+          "_id": {
+            "type": "string"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
