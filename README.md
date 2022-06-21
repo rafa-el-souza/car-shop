@@ -80,6 +80,6 @@ You will need the following installed on your computer.
 - [x] Add documentation
 - [x] Add integration tests
 - [x] 100% coverage unit tests
-- [ ] Add swagger docs
+- [x] Add swagger docs
 - [ ] Add Docker
 - [ ] Deploy
